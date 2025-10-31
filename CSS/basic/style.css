@@ -1,0 +1,27 @@
+*{
+    background-color: rgb(22, 221, 55);
+}
+
+h1{
+    background-color: aqua;
+}
+
+
+p{
+    color: skyblue;
+}
+
+
+.A{
+    background-color: blueviolet;
+}
+
+
+#para1{
+    color: #FF2453;
+}
+
+
+h2{
+    background: linear-gradient(90deg ,red 0,green 10%,blue 50%,yellow 75%);
+}
