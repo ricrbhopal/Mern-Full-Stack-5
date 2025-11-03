@@ -1,0 +1,78 @@
+body {
+  background-color: aliceblue;
+  background: url(./4194.jpg);
+  background-size: cover;
+}
+
+#mainbox {
+  width: 500px;
+  height: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+}
+
+#formHeading {
+  text-align: center;
+  color: blue;
+}
+
+#loginForm {
+  width: max-content;
+  margin: auto;
+  padding: 10px;
+}
+
+.formField {
+  padding: 10px;
+  label {
+    font-size: large;
+    color: black;
+  }
+}
+
+.formField input {
+  padding: 10px;
+  border-radius: 25px;
+  outline-color: rgb(0, 0, 255);
+  border: 1px solid #7e7e7e;
+}
+
+#fromControl {
+  margin: auto;
+  width: fit-content;
+
+  button {
+    padding: 7px;
+    margin: 10px;
+    border-radius: 25px;
+  }
+}
+
+#submitButton {
+  background-color: green;
+  color: greenyellow;
+  border: 1px solid green;
+}
+
+#cancelButton {
+  background-color: red;
+  color: white;
+  border: 1px solid red;
+}
+
+#submitButton:hover {
+  background-color: white;
+  color: green;
+}
+
+#cancelButton:hover {
+  background-color: white;
+  color: red;
+}
+
+#submitButton:active {
+  background-color: blue;
+  color: aliceblue;
+}
