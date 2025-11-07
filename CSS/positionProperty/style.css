@@ -1,47 +1,84 @@
-*{
-    margin: 0;
-    padding: 0;
+:root {
+  --primary: #41a67e;
+  --secondary: #05339c;
+  --tertiary: #1055c9;
+  --text: #e5c95f;
+  --var1: 40px;
+
+  --primaryFont: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+
+    --HeadingFontSize:xx-large;
+}
+
+* {
+  margin: 0;
+  padding: 0;
 }
 
 #Navbar {
   border: 1px solid #000;
-  background-color: blue;
-  color: aliceblue;
+  background-color: var(--primary);
+  color: var(--text);
   display: flex;
   justify-content: space-between;
-  padding: 10px 25px;
+  padding: var(--var1) 25px;
   align-items: center;
-
-  div{
+  font-family: var(--primaryFont);
+  div {
     display: flex;
     gap: 15px;
   }
 
-  span:hover{
+  span:hover {
     color: red;
   }
 
   position: sticky;
   top: 0;
+  z-index: 99;
 }
 
-
-h4{
-    text-align: center;
+h4 {
+  text-align: center;
 }
 
+#helpButton {
+  height: 50px;
+  width: 50px;
+  font-size: xx-large;
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
 
+#d2 {
+  width: 500px;
+  height: 700px;
+  border: 1px solid #000;
+  background-color: aqua;
+  margin-left: 300px;
+  position: relative;
+}
 
-#helpButton{
-    height: 50px;
-    width: 50px;
-    font-size: xx-large;
-    padding: 10px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+#helpButton2 {
+  background-color: red;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+
+#d3 {
+  width: 200px;
+  height: 200px;
+  background-color: grey;
+  border: 1px solid #000;
+  position: relative;
 }
