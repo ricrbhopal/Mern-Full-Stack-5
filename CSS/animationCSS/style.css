@@ -1,0 +1,104 @@
+h1 {
+  width: 200px;
+  border: 1px solid #000;
+  margin-left: 0px;
+}
+
+h1:hover {
+  /* margin-left: 200px;
+    transition: margin-left 5s; */
+  width: 500px;
+  transition: width 5s;
+}
+
+#outer {
+  width: 500px;
+  height: 50px;
+  border: 1px solid #000;
+
+  #inner {
+    width: 0%;
+    height: 50px;
+    background-color: red;
+  }
+}
+
+#outer:hover {
+  #inner {
+    width: 100%;
+    background-color: green;
+    transition: width 5s ease-in-out, background-color 5s ease-in-out;
+  }
+}
+
+#D1 {
+  border: 1px solid #ff0000;
+  width: fit-content;
+  position: relative;
+}
+
+#d1 {
+  background: white;
+  position: absolute;
+  overflow: hidden;
+  top: -80px;
+  left: 50px;
+  height: 0px;
+}
+
+#D1:hover {
+  #d1 {
+    background: white;
+    position: absolute;
+
+    height: 77px;
+    transition: height 0.3s;
+  }
+}
+
+#outer1 {
+  width: 500px;
+  height: 50px;
+  border: 1px solid #000;
+
+  #inner1 {
+    height: 50px;
+  }
+}
+
+#outer1:hover {
+  #inner1 {
+    animation: myAnimantion 5s linear;
+  }
+}
+
+@keyframes myAnimantion {
+  0% {
+    width: 0%;
+    background-color: red;
+  }
+  50% {
+    width: 50%;
+    background-color: yellow;
+  }
+  100% {
+    width: 100%;
+    background-color: green;
+  }
+}
+
+
+
+
+#d2{
+  border: 1px solid #000;
+  font-size: xx-large;
+  width: 100px;
+  height: 50px;
+}
+
+
+#d2:hover{
+   transform: rotateY(180deg);
+  transition: transform 2s;
+}

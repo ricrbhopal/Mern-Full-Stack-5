@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#dabba {
+  width: 100px;
+  height: 100px;
+
+  position: absolute;
+  animation: movingDabba 8s linear infinite;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+@keyframes movingDabba {
+  0% {
+    top: 0px;
+    left: 0px;
+    transform: rotate(-1800deg);
+    transition: transform 2s;
+  }
+  25% {
+    top: 0px;
+    left: 500px;
+  }
+  50% {
+    top: 500px;
+    left: 500px;
+  }
+  75% {
+    top: 500px;
+    left: 0px;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+  }
+}
