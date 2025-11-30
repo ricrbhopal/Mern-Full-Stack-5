@@ -4,11 +4,11 @@ let b = 1,
   s = 0,
   i = 0;
 
-const img = document.getElementById("image").src;
+const img = document.getElementById("image");
 
-console.log(img);
+console.log(img.src);
 
-if (img === "http://127.0.0.1:5500/JavaScript/ImageEditor/index.html") {
+if (img.src === "http://127.0.0.1:5500/JavaScript/ImageEditor/index.html") {
   document.getElementById("image").style.display = "none";
 }
 
@@ -73,4 +73,42 @@ function reset() {
   document.getElementById("Sepia").value = "0";
   document.getElementById("Invert").value = "0";
   document.getElementById("Grayscale").value = "0";
+}
+
+function download() {
+  if (img.src === "http://127.0.0.1:5500/JavaScript/ImageEditor/index.html") {
+    alert("Please Uplaod the Image First");
+    return;
+  }
+
+  if (!img.complete) {
+    alert("Image Upload is in Progress.  Please wait....");
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+
+  const ctx = canvas.getContext("2d");
+
+  //fetch the original width and height of the image
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+
+  const filter = getComputedStyle(img).filter;
+
+  ctx.filter = filter === "none" ? "none" : filter;
+
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  const dataURL = canvas.toDataURL("image/png");
+
+  const anchorTag = document.createElement("a");
+
+  anchorTag.href = dataURL;
+
+  anchorTag.download = "editedImage.png";
+
+  document.body.appendChild(anchorTag);
+  anchorTag.click();
+  document.body.removeChild(anchorTag);
 }
