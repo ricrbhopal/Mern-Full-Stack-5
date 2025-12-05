@@ -22,3 +22,60 @@ button {
 .on {
   background-color: yellow;
 }
+
+#rainbowbulb {
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 50%;
+}
+
+#colorpalet{
+  display: flex;
+  gap: 10px;
+  margin: 20px;
+  
+}
+
+.color {
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 50%;
+  cursor: default;
+}
+
+
+#c1{
+  background-color: violet;
+}
+
+#c2{
+  background-color: indigo;
+}
+
+#c3{
+  background-color: blue;
+}
+
+#c4{
+  background-color: green;
+}
+
+#c5{
+  background-color: yellow;
+}
+
+#c6{
+  background-color: orange;
+}
+
+#c7{
+  background-color: red;
+}

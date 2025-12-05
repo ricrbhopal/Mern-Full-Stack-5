@@ -19,3 +19,13 @@ if (confirm("Are you Sure")) {
 } else {
   console.error("Its ok");
 }
+
+let x = 5;
+let y = 7;
+
+
+console.log(x+y);
+
+
+
+
