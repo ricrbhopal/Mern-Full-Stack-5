@@ -28,30 +28,28 @@ function SB_Control2() {
   document.getElementById("smartBulb").classList.toggle("on");
 }
 
-document.getElementById("c1").addEventListener("mouseenter", () => {
-  fillColour("violet");
-});
-
-document.getElementById("c1").addEventListener("mouseleave", () => {
-  fillColour("white");
-});
-
 function fillColour(Color) {
   console.log(Color);
   document.getElementById("rainbowbulb").style.backgroundColor = Color;
 }
 
+document.getElementById("c1").addEventListener("mouseenter", () => {
+  fillColour("violet");
+});
+document.getElementById("c1").addEventListener("mouseleave", () => {
+  fillColour("white");
+});
+
 document.getElementById("c2").addEventListener("mouseenter", () => {
   fillColour("indigo");
 });
-
 document.getElementById("c2").addEventListener("mouseleave", () => {
   fillColour("white");
 });
+
 document.getElementById("c3").addEventListener("mouseenter", () => {
   fillColour("blue");
 });
-
 document.getElementById("c3").addEventListener("mouseleave", () => {
   fillColour("white");
 });
@@ -59,28 +57,27 @@ document.getElementById("c3").addEventListener("mouseleave", () => {
 document.getElementById("c4").addEventListener("mouseenter", () => {
   fillColour("green");
 });
-
 document.getElementById("c4").addEventListener("mouseleave", () => {
   fillColour("white");
 });
+
 document.getElementById("c5").addEventListener("mouseenter", () => {
   fillColour("yellow");
 });
-
 document.getElementById("c5").addEventListener("mouseleave", () => {
   fillColour("white");
 });
+
 document.getElementById("c6").addEventListener("mouseenter", () => {
   fillColour("orange");
 });
-
 document.getElementById("c6").addEventListener("mouseleave", () => {
   fillColour("white");
 });
+
 document.getElementById("c7").addEventListener("mouseenter", () => {
   fillColour("red");
 });
-
 document.getElementById("c7").addEventListener("mouseleave", () => {
   fillColour("white");
 });
