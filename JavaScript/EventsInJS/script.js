@@ -31,6 +31,7 @@ function SB_Control2() {
 function fillColour(Color) {
   console.log(Color);
   document.getElementById("rainbowbulb").style.backgroundColor = Color;
+  document.getElementById("rainbowbulb").style.borderColor = Color;
 }
 
 document.getElementById("c1").addEventListener("mouseenter", () => {
