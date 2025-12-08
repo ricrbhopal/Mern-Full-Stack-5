@@ -91,8 +91,14 @@ function search() {
     flag.title = "State: Maharashtra \nCapital: Mumbai";
   }
 
+localStorage.setItem()
+localStorage.getItem()
+localStorage.removeItem()
 
 
+
+JSON.parse()
+JSON.stringify()
 
   document.getElementById("Map").appendChild(flag);
   document.getElementById("State").value=""
