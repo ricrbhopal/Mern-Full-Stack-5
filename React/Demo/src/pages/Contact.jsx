@@ -17,15 +17,22 @@ const Contact = () => {
     setContactData((previousData) => ({ ...previousData, [name]: value }));
   };
 
-  const handleClearForm = () => {};
+  const handleClearForm = () => {
+    setContactData({
+      fullName: "",
+      email: "",
+      phone: "",
+      city: "",
+      subject: "",
+      message: "",
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await fetch(
-        "https://official-joke-api.appspot.com/jokes/jhbaskdjbf"
-      );
+      console.log(contactData);
     } catch (error) {
       console.log(error.message);
     } finally {
