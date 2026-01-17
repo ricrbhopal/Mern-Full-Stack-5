@@ -38,7 +38,7 @@ const UserSideBar = ({ active, setActive, isCollapsed, setIsCollapsed }) => {
         <div className="py-6 space-y-5 w-full">
           {menuItems.map((item, idx) => (
             <button
-              className={`flex gap-3 items-center ps-2 rounded-xl h-12 w-full text-nowrap overflow-hidden duration-300
+              className={`flex gap-3 items-center text-lg ps-2 rounded-xl h-10 w-full text-nowrap overflow-hidden duration-300
                 ${
                   active === item.key
                     ? "bg-(--color-secondary) text-white"
