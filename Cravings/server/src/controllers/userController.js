@@ -52,7 +52,7 @@ export const UserChangePhoto = async (req, res, next) => {
     const currentUser = req.user;
     const dp = req.file;
 
-    console.log("request file: ", req.file);
+    //console.log("request file: ", req.file);
 
     if (!dp) {
       const error = new Error("Profile Picture required");
