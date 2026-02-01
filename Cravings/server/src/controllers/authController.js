@@ -127,6 +127,12 @@ export const UserGenOTP = async (req, res, next) => {
       return next(error);
     }
 
+    //Check if user is otp is there or not
+    const existingUserOTP = await OTP.findOne({ email });
+    if (existingUserOTP) {
+      await existingUserOTP.deleteOne();
+    }
+
     const otp = Math.floor(Math.random() * 1000000).toString();
     console.log(typeof otp);
 
@@ -161,7 +167,7 @@ export const UserVerifyOtp = async (req, res, next) => {
       return next(error);
     }
 
-    //Check if user is registred or not
+    //Check if user is otp is there or not
     const existingUserOTP = await OTP.findOne({ email });
     if (!existingUserOTP) {
       const error = new Error("OTP Match Error, Please Retry");
