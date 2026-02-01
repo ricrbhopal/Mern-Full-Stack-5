@@ -177,7 +177,7 @@ export const UserVerifyOtp = async (req, res, next) => {
       return next(error);
     }
 
-    await existingUserOTP.remove();
+    await existingUserOTP.deleteOne();
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
