@@ -59,6 +59,12 @@ const Header = () => {
           >
             Contact
           </Link>
+          <Link
+            to={"/orderNowCopy"}
+            className="text-decoration-none text-white hover:text-(--color-accent)"
+          >
+            Order Now
+          </Link>
         </div>
         <div className="flex gap-4">
           {isLogin ? (
