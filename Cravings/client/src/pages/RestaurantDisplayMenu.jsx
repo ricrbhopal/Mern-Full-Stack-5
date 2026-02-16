@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import api from "../config/Api";
 import toast from "react-hot-toast";
 
 const RestaurantDisplayMenu = () => {
+  const { isLogin, role } = useAuth();
+  const navigate = useNavigate();
   const data = useLocation().state;
-  console.log("Resturant Menu Page", data);
+  // console.log("Resturant Menu Page", data);
 
   const [loading, setLoading] = useState(false);
   const [menuItems, setMenuItems] = useState();
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
+  const [cartFlag, setCartFlag] = useState([]);
 
   const fetchMenuItems = async () => {
     setLoading(true);
@@ -22,6 +27,41 @@ const RestaurantDisplayMenu = () => {
       setLoading(false);
     }
   };
+
+  const handleAddToCart = (NewItem) => {
+    if (cart) {
+      if (cart.resturantID === NewItem.resturantID._id) {
+        setCart((prev) => ({
+          ...prev,
+          cartItem: [...prev.cartItem, { ...NewItem, quantity: 1 }],
+          cartValue: Number(prev.cartValue) + Number(NewItem.price),
+        }));
+        setCartFlag((prev) => [...prev, NewItem._id]);
+      } else {
+        toast.error("Clear the cart first");
+      }
+    } else {
+      setCart({
+        resturantID: NewItem.resturantID._id,
+        cartItem: [{ ...NewItem, quantity: 1 }],
+        cartValue: Number(NewItem.price),
+      });
+      setCartFlag((prev) => [...prev, NewItem._id]);
+    }
+  };
+
+  const handleCheckout = () => {
+    isLogin && role === "customer"
+      ? (localStorage.setItem("cart", JSON.stringify(cart)),
+        navigate("/checkout-page"))
+      : (toast.error("Please Login as Customer"), navigate("/login"));
+  };
+
+  // console.log(cart);
+
+  useEffect(() => {
+    cart && localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   useEffect(() => {
     fetchMenuItems();
@@ -105,8 +145,18 @@ const RestaurantDisplayMenu = () => {
                       <div className="text-(--color-primary) text-2xl font-bold">
                         ₹{EachItem.price}
                       </div>
-                      <button className="bg-(--color-primary) text-white px-6 py-2 rounded hover:bg-(--color-primary-hover) transition">
-                        Add to Cart
+                      <button
+                        className="bg-(--color-primary) text-white px-6 py-2 rounded hover:bg-(--color-primary-hover) transition disabled:bg-gray-300"
+                        onClick={() => handleAddToCart(EachItem)}
+                        disabled={cartFlag.includes(EachItem._id)}
+                      >
+                        {console.log(
+                          "cartFlag",
+                          cartFlag.includes(EachItem._id),
+                        )}
+                        {cartFlag.includes(EachItem._id)
+                          ? "Added"
+                          : "Add to Cart"}
                       </button>
                     </div>
                   </div>
@@ -115,6 +165,27 @@ const RestaurantDisplayMenu = () => {
             ))}
         </div>
       </div>
+
+      {cart && (
+        <div className="fixed w-full bottom-5 flex items-center justify-center">
+          <div className="bg-(--color-secondary) rounded-3xl w-2xl py-2 px-5">
+            <div className="flex items-center justify-between">
+              <div className="text-white font-bold">
+                Items : {cart.cartItem.length}
+              </div>
+              <div className="text-white font-bold flex gap-4 items-center">
+                <span>₹ : {cart.cartValue}</span>
+                <button
+                  className="bg-(--color-primary) text-white px-6 py-2 rounded hover:bg-(--color-primary-hover) transition disabled:bg-gray-300"
+                  onClick={handleCheckout}
+                >
+                  Proceed to Checkout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
