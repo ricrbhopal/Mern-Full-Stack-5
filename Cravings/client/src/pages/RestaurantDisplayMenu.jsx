@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { FaRegTrashAlt } from "react-icons/fa";
 import api from "../config/Api";
 import toast from "react-hot-toast";
 
@@ -26,6 +27,12 @@ const RestaurantDisplayMenu = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleClearCart = () => {
+    localStorage.removeItem("cart");
+    setCart();
+    setCartFlag([]);
   };
 
   const handleAddToCart = (NewItem) => {
@@ -170,13 +177,20 @@ const RestaurantDisplayMenu = () => {
         <div className="fixed w-full bottom-5 flex items-center justify-center">
           <div className="bg-(--color-secondary) rounded-3xl w-2xl py-2 px-5">
             <div className="flex items-center justify-between">
-              <div className="text-white font-bold">
-                Items : {cart.cartItem.length}
+              <div className="text-white font-bold flex gap-3 items-center">
+                <span>Items : {cart.cartItem.length}</span>
+                <button
+                  className=" text-white px-2 py-2 rounded hover:bg-white/30 transition disabled:bg-gray-300"
+                  onClick={handleClearCart}
+                >
+                  <FaRegTrashAlt />
+                </button>
               </div>
               <div className="text-white font-bold flex gap-4 items-center">
                 <span>₹ : {cart.cartValue}</span>
+
                 <button
-                  className="bg-(--color-primary) text-white px-6 py-2 rounded hover:bg-(--color-primary-hover) transition disabled:bg-gray-300"
+                  className="text-white px-6 py-2 rounded hover:bg-(--color-primary-hover)/40 transition disabled:bg-gray-300"
                   onClick={handleCheckout}
                 >
                   Proceed to Checkout
