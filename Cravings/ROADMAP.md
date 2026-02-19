@@ -1,1014 +1,1214 @@
-# Cravings - Development Roadmap & Class Planning
+# Cravings — Development Roadmap
 
 > **Start Date**: February 19, 2026
-> **Deadline**: March 1, 2026
-> **Available Days**: 10 Working Days
-> **Daily Commitment**: Minimum 6-8 hours/day
+> **Daily Commitment**: 3 Hours / Day
+> **Estimated Deadline**: March 4, 2026 (14 Days)
+> **Buffer Day**: March 5, 2026
 
 ---
 
-## Current Status After Code Review
+## Current Codebase Status (After Full Code Review)
 
-### What is DONE (No Work Needed)
+### DONE — No Work Needed
 
-| Module | Status | Details |
-|--------|--------|---------|
-| **Authentication System** | ✅ Complete | Register, Login, Logout, OTP, Forget Password all working |
-| **JWT + Cookie Auth** | ✅ Complete | `parleG` cookie, `Protect`, `ManagerProtect`, `CustomerProtect`, `AdminProtect`, `PartnerProtect`, `OtpProtect` middleware — all in place |
-| **User Profile CRUD** | ✅ Complete | Update profile, change photo (Cloudinary), reset password |
-| **Restaurant Profile CRUD** | ✅ Complete | Update profile, change photo, reset password |
-| **Restaurant Menu CRUD** | ✅ Complete | Add, edit, get menu items with multi-image upload |
-| **Public APIs** | ✅ Complete | Get all restaurants, get restaurant menu, contact form |
-| **Frontend Pages** | ✅ Complete | Home, About, Contact, Login, Register, OrderNow, RestaurantDisplayMenu |
-| **Frontend Cart (localStorage)** | ✅ Partial | Add to cart, clear cart, quantity change on checkout page — but cart is **only in localStorage**, no backend persistence |
-| **Checkout Page UI** | ✅ Partial | Full UI built with price summary, delivery address, payment method selector, promo code input — but **no backend API call** on "Place Order" |
+| Module | Files | Status |
+|--------|-------|--------|
+| Auth (Register/Login/Logout/OTP/Forgot Password) | `authController.js`, `authRouter.js` | ✅ Complete |
+| JWT Cookie Auth + Role Middlewares | `authMiddleware.js` (Protect, ManagerProtect, CustomerProtect, PartnerProtect, AdminProtect, OtpProtect) | ✅ Complete |
+| User Profile (Update/Photo/Password) | `userController.js`, `userRouter.js` | ✅ Complete |
+| Restaurant Profile (Update/Photo/Password) | `restaurantController.js`, `restaurantRouter.js` | ✅ Complete |
+| Restaurant Menu CRUD (Add/Edit/Get) | `restaurantController.js` | ✅ Complete |
+| Public APIs (Restaurants List/Menu/Contact) | `publicControlller.js`, `publicRouter.js` | ✅ Complete |
+| Cloudinary Image Uploads | `cloudinary.js`, `imageUploader.js` | ✅ Complete |
+| Email Service (OTP Emails) | `email.js`, `emailService.js` | ✅ Complete |
+| All DB Models (User/Menu/Contact/OTP) | `models/` folder | ✅ Complete |
+| All Frontend Pages (Home/About/Contact/Login/Register/OrderNow) | `pages/` folder | ✅ Complete |
+| Cart (localStorage) + Checkout Page UI | `RestaurantDisplayMenu.jsx`, `CheckoutPage.jsx` | ✅ UI Done |
+| User Dashboard Shell + Profile/Sidebar | `UserDashboard.jsx`, `UserProfile.jsx`, `UserSideBar.jsx` | ✅ Complete |
+| Restaurant Dashboard Shell + Profile/Menu/Sidebar | `ResturantDashboard.jsx`, `RestaurantProfile.jsx`, `RestaurantMenu.jsx`, `RestaurantSideBar.jsx` | ✅ Complete |
 
-### What is PENDING (Needs to be Built)
+### PENDING — Needs to Be Built
 
-| Priority | Module | Current State |
-|----------|--------|---------------|
-| 🔴 **P0** | Order Model (Schema) | Does NOT exist — no `orderModel.js` |
-| 🔴 **P0** | Order Controller + Routes | Does NOT exist — no order APIs |
-| 🔴 **P0** | Connect Checkout → Create Order API | `handlePlaceOrder()` in CheckoutPage.jsx only shows a toast, no API call |
-| 🔴 **P0** | Customer Order History | `UserOrders.jsx` is an **empty component** — just returns `<div>UserOrders</div>` |
-| 🔴 **P0** | Restaurant Incoming Orders | `RestaurantOrders.jsx` is a **placeholder** — no data, no accept/reject |
-| 🟠 **P1** | Rider Dashboard | `RiderDashboard.jsx` returns only `<div>RiderDashboard</div>` — completely empty |
-| 🟠 **P1** | Rider Order Assignment & Delivery | No rider controller, no rider routes, no delivery flow |
-| 🟠 **P1** | Payment Gateway (Razorpay) | No payment integration — checkout just shows success toast |
-| 🟡 **P2** | Search & Filter on OrderNow page | Currently lists all restaurants without any search bar or filters |
-| 🟡 **P2** | User Overview Dashboard | `UserOverview.jsx` is **empty** — returns empty fragment |
-| 🟡 **P2** | User Transactions | `UserTransactions.jsx` is **empty** |
-| 🟡 **P2** | Restaurant Overview (Real Data) | `RestaurantOverview.jsx` has **hardcoded zeros** — not connected to DB |
-| 🟡 **P2** | Restaurant Earnings (Real Data) | `RestaurantEarnings.jsx` is a **placeholder** |
-| 🟢 **P3** | User & Restaurant HelpDesk | Both are empty/placeholder components |
-| 🟢 **P3** | Admin Dashboard | Returns only `<div>AdminDashboard</div>` — completely empty |
+| Priority | What | Current State |
+|----------|------|---------------|
+| 🔴 P0 | Order Model (Schema) | File does not exist |
+| 🔴 P0 | Order Controller + Router | File does not exist |
+| 🔴 P0 | Checkout → Create Order API call | `handlePlaceOrder()` only shows a toast, no API call |
+| 🔴 P0 | Customer Order History UI | `UserOrders.jsx` = empty `<div>UserOrders</div>` |
+| 🔴 P0 | Restaurant Incoming Orders UI | `RestaurantOrders.jsx` = placeholder text only |
+| 🟠 P1 | Rider Controller + Router | File does not exist |
+| 🟠 P1 | Rider Dashboard + Components | `RiderDashboard.jsx` = empty `<div>RiderDashboard</div>` |
+| 🟠 P1 | Payment Gateway (Razorpay) | No integration — checkout just shows toast |
+| 🟡 P2 | Search & Filter on OrderNow | No search bar, no filters — just lists all restaurants |
+| 🟡 P2 | User Overview | `UserOverview.jsx` = empty fragment |
+| 🟡 P2 | User Transactions | `UserTransactions.jsx` = empty `<div>` |
+| 🟡 P2 | Restaurant Overview (Real Data) | `RestaurantOverview.jsx` = hardcoded zeros |
+| 🟡 P2 | Restaurant Earnings (Real Data) | `RestaurantEarnings.jsx` = placeholder |
+| 🟢 P3 | HelpDesk Forms (User + Restaurant) | Both are empty/placeholder |
+| 🟢 P3 | Admin Dashboard | `AdminDashboard.jsx` = empty `<div>` |
 
 ---
 
-## 10-Day Class-by-Class Roadmap
+## 14-Day Plan (3 Hours/Day)
 
 ---
 
-### DAY 1 (Feb 19) — Order Model + Order Backend APIs
+### DAY 1 — Feb 19 (Wed) — Order Model + Order Controller
 
-**Goal**: Build the entire Order backend so every other feature can depend on it.
+**Session Goal**: Create the Order schema and all backend controller functions.
 
-#### Class 1: Order Model (`server/src/models/orderModel.js`)
+#### Hour 1: Order Model
 
-**Topics to Learn/Revise**:
-- Mongoose Schema design with nested objects & arrays
-- Schema references (`ref` + `ObjectId`)
-- Enum fields for order status
-- Timestamps
+**Topics**: Mongoose Schema with nested objects, ObjectId references, enums
 
-**What to Build**:
+**File to Create**: `server/src/models/orderModel.js`
 
 ```
-Order Schema Fields:
-├── customerID        → ObjectId ref "User" (required)
-├── restaurantID      → ObjectId ref "User" (required)
-├── riderID           → ObjectId ref "User" (default: null)
-├── items[]           → Array of:
-│   ├── menuItemID    → ObjectId ref "Menu"
-│   ├── itemName      → String
-│   ├── price         → Number
-│   ├── quantity      → Number
-│   └── image         → String (url)
-├── deliveryAddress   → Object:
-│   ├── address       → String
-│   ├── city          → String
-│   ├── pin           → String
-│   └── geoLocation   → { lat, lon }
-├── pricing           → Object:
-│   ├── subtotal      → Number
-│   ├── tax           → Number
-│   ├── deliveryCharge→ Number
-│   └── total         → Number
-├── paymentMethod     → String enum ["credit-card","upi","wallet","cod"]
-├── paymentStatus     → String enum ["pending","paid","failed","refunded"]
-├── orderStatus       → String enum ["placed","confirmed","preparing","on-way","delivered","cancelled"]
-├── paymentID         → String (from Razorpay/Stripe, default: null)
-└── timestamps        → createdAt, updatedAt (auto)
+Order Schema:
+│
+├── customerID         → ObjectId ref "User" (required)
+├── restaurantID       → ObjectId ref "User" (required)
+├── riderID            → ObjectId ref "User" (default: null)
+│
+├── items[ ]           → Array of objects:
+│   ├── menuItemID     → ObjectId ref "Menu"
+│   ├── itemName       → String
+│   ├── price          → Number
+│   ├── quantity       → Number
+│   └── image          → String (url)
+│
+├── deliveryAddress    → Object:
+│   ├── address        → String
+│   ├── city           → String
+│   ├── pin            → String
+│   └── geoLocation    → { lat: String, lon: String }
+│
+├── pricing            → Object:
+│   ├── subtotal       → Number
+│   ├── tax            → Number
+│   ├── deliveryCharge → Number
+│   └── total          → Number
+│
+├── paymentMethod      → enum ["credit-card", "upi", "wallet", "cod"]
+├── paymentStatus      → enum ["pending", "paid", "failed", "refunded"]
+├── paymentID          → String (Razorpay ID, default: null)
+│
+├── orderStatus        → enum ["placed", "confirmed", "preparing",
+│                               "ready", "on-way", "delivered", "cancelled"]
+│
+└── timestamps         → createdAt, updatedAt (auto)
 ```
 
 **Checklist**:
 - [ ] Create `server/src/models/orderModel.js`
-- [ ] Define schema with all fields, proper types, enums, defaults
-- [ ] Add Mongoose `timestamps: true`
+- [ ] Define all fields with proper types, enums, defaults, refs
 - [ ] Export the model
 
----
+#### Hour 2–3: Order Controller
 
-#### Class 2: Order Controller (`server/src/controllers/orderController.js`)
+**Topics**: Express async controllers, Mongoose CRUD, populate, error handling
 
-**Topics to Learn/Revise**:
-- Express async controller pattern (try/catch with `next(error)`)
-- Mongoose `.create()`, `.find()`, `.findById()`, `.populate()`
-- Query filtering & sorting
+**File to Create**: `server/src/controllers/orderController.js`
 
-**What to Build**:
-
-| Function | Method | Purpose |
-|----------|--------|---------|
-| `createOrder` | POST | Customer places a new order from cart data |
-| `getCustomerOrders` | GET | Customer fetches their order history |
-| `getRestaurantOrders` | GET | Restaurant fetches all incoming orders |
-| `getSingleOrder` | GET | Get detailed info of one order |
-| `updateOrderStatus` | PATCH | Restaurant/Rider updates order status |
-| `cancelOrder` | PATCH | Customer cancels an order (only if status is "placed") |
-| `assignRider` | PATCH | Assign a rider to an order |
-| `getRiderOrders` | GET | Rider fetches assigned orders |
+| Function | Purpose |
+|----------|---------|
+| `createOrder` | Customer places order from cart — validates items, builds pricing, saves to DB |
+| `getCustomerOrders` | Returns all orders for logged-in customer (sorted newest first, populated) |
+| `getRestaurantOrders` | Returns all orders for logged-in restaurant manager |
+| `getSingleOrder` | Returns one order by ID (with full populate) |
+| `updateOrderStatus` | Restaurant updates order status (confirm → prepare → ready) |
+| `cancelOrder` | Customer cancels — only allowed if status is "placed" |
 
 **Checklist**:
 - [ ] Create `server/src/controllers/orderController.js`
-- [ ] Implement `createOrder` — accept cart items, calculate totals, create order with status "placed"
-- [ ] Implement `getCustomerOrders` — filter by `customerID`, sort newest first, populate restaurant info
-- [ ] Implement `getRestaurantOrders` — filter by `restaurantID`, sort newest first
-- [ ] Implement `getSingleOrder` — findById with full populate
-- [ ] Implement `updateOrderStatus` — validate status transitions
-- [ ] Implement `cancelOrder` — only allow if status is "placed"
-- [ ] Implement `assignRider` — set riderID on order
-- [ ] Implement `getRiderOrders` — filter by `riderID`
+- [ ] `createOrder` — accept items array, delivery address, payment method; calculate pricing; save
+- [ ] `getCustomerOrders` — `Order.find({ customerID }).sort({ createdAt: -1 }).populate("restaurantID")`
+- [ ] `getRestaurantOrders` — `Order.find({ restaurantID }).sort({ createdAt: -1 }).populate("customerID")`
+- [ ] `getSingleOrder` — `Order.findById(id).populate("customerID restaurantID riderID")`
+- [ ] `updateOrderStatus` — validate allowed transitions, save new status
+- [ ] `cancelOrder` — check `orderStatus === "placed"` before allowing cancel
 
 ---
 
-#### Class 3: Order Router (`server/src/routers/orderRouter.js`)
+### DAY 2 — Feb 20 (Thu) — Order Router + Wire to Server + Test APIs
 
-**Topics to Learn/Revise**:
-- Express Router setup
-- Chaining middleware (Protect → RoleProtect → Controller)
+**Session Goal**: Create the router, register it, and verify all endpoints work with Postman.
 
-**What to Build**:
+#### Hour 1: Order Router
+
+**Topics**: Express Router, middleware chaining
+
+**File to Create**: `server/src/routers/orderRouter.js`
 
 ```
-POST   /order/create              → Protect + CustomerProtect → createOrder
-GET    /order/my-orders           → Protect + CustomerProtect → getCustomerOrders
-GET    /order/:id                 → Protect → getSingleOrder
-PATCH  /order/cancel/:id          → Protect + CustomerProtect → cancelOrder
-GET    /order/restaurant-orders   → Protect + ManagerProtect → getRestaurantOrders
-PATCH  /order/update-status/:id   → Protect + ManagerProtect → updateOrderStatus
-PATCH  /order/assign-rider/:id    → Protect + ManagerProtect → assignRider
-GET    /order/rider-orders        → Protect + PartnerProtect → getRiderOrders
+POST   /order/create              → Protect, CustomerProtect  → createOrder
+GET    /order/my-orders           → Protect, CustomerProtect  → getCustomerOrders
+GET    /order/:id                 → Protect                   → getSingleOrder
+PATCH  /order/cancel/:id          → Protect, CustomerProtect  → cancelOrder
+GET    /order/restaurant-orders   → Protect, ManagerProtect   → getRestaurantOrders
+PATCH  /order/update-status/:id   → Protect, ManagerProtect   → updateOrderStatus
+```
+
+**File to Update**: `server/index.js`
+- Import `OrderRouter`
+- Add `app.use("/order", OrderRouter)`
+
+**Checklist**:
+- [ ] Create `server/src/routers/orderRouter.js` with all 6 routes
+- [ ] Update `server/index.js` to register the order router
+- [ ] Verify server starts without errors
+
+#### Hour 2–3: API Testing with Postman/Thunder Client
+
+**Test each endpoint**:
+
+| # | Test | Method | URL | Body/Notes |
+|---|------|--------|-----|------------|
+| 1 | Login as customer | POST | `/auth/login` | Get cookie |
+| 2 | Create order | POST | `/order/create` | Send items, address, payment |
+| 3 | Get my orders | GET | `/order/my-orders` | Should return the order |
+| 4 | Get single order | GET | `/order/:id` | Should return populated order |
+| 5 | Cancel order | PATCH | `/order/cancel/:id` | Status should become "cancelled" |
+| 6 | Create another order | POST | `/order/create` | For restaurant testing |
+| 7 | Login as manager | POST | `/auth/login` | Switch user |
+| 8 | Get restaurant orders | GET | `/order/restaurant-orders` | Should show the order |
+| 9 | Update status to confirmed | PATCH | `/order/update-status/:id` | `{ orderStatus: "confirmed" }` |
+| 10 | Update status to preparing | PATCH | `/order/update-status/:id` | `{ orderStatus: "preparing" }` |
+
+**Checklist**:
+- [ ] Test all 6 endpoints
+- [ ] Fix any bugs found
+- [ ] Verify populate works correctly
+- [ ] Verify status transitions are validated
+
+---
+
+### DAY 3 — Feb 21 (Fri) — Connect Checkout Page + Customer Order History
+
+**Session Goal**: Customer can place real orders and see them in their dashboard.
+
+#### Hour 1: Update CheckoutPage.jsx
+
+**Topics**: Axios POST request, building request payload, handling API responses
+
+**File to Update**: `client/src/pages/CheckoutPage.jsx`
+
+**Changes to `handlePlaceOrder()`**:
+```
+Current Flow (broken):
+  → toast.success("Order placed successfully!")
+  → remove cart
+  → navigate
+
+New Flow:
+  1. Build payload:
+     {
+       items: cart.cartItem.map(item => ({
+         menuItemID: item._id,
+         itemName: item.itemName,
+         price: item.price,
+         quantity: item.quantity,
+         image: item.images?.[0]?.url
+       })),
+       restaurantID: cart.resturantID,
+       deliveryAddress: {
+         address: user.address,
+         city: user.city,
+         pin: user.pin,
+         geoLocation: user.geoLocation
+       },
+       pricing: { subtotal, tax, deliveryCharge: DELIVERY_CHARGE, total },
+       paymentMethod: paymentMethod
+     }
+  2. POST /order/create with payload
+  3. On success → clear cart → toast → navigate to user-dashboard orders
+  4. On error → toast error message
 ```
 
 **Checklist**:
-- [ ] Create `server/src/routers/orderRouter.js`
-- [ ] Wire all routes with proper middleware chain
-- [ ] Register router in `server/index.js` → `app.use("/order", OrderRouter)`
-- [ ] Test all endpoints with Postman/Thunder Client
+- [ ] Update `handlePlaceOrder()` to call `api.post("/order/create", payload)`
+- [ ] Build payload object from cart state + user info
+- [ ] Handle success (clear localStorage, toast, navigate)
+- [ ] Handle error (toast server error message)
+- [ ] Test: Add to cart → Checkout → Place Order → Verify order in DB
 
----
+#### Hour 2–3: Customer Order History UI
 
-### DAY 2 (Feb 20) — Connect Frontend Checkout → Order API + Customer Order History
+**Topics**: useEffect data fetching, status badge rendering, conditional buttons
 
-**Goal**: The customer can actually place orders and see their order history.
-
-#### Class 4: Connect Checkout Page to Backend
-
-**Topics to Learn/Revise**:
-- Axios POST requests with JSON body
-- Handling loading states and error responses
-- localStorage cleanup after order placement
-
-**What to Build**:
-
-**File**: `client/src/pages/CheckoutPage.jsx`
-
-Update `handlePlaceOrder()`:
-1. Build order payload from cart state (items, pricing, address from user, payment method)
-2. Call `POST /order/create` with the payload
-3. On success → clear localStorage cart → navigate to user dashboard orders tab
-4. On error → show toast with error message
-
-**Checklist**:
-- [ ] Update `handlePlaceOrder()` in `CheckoutPage.jsx` to call API
-- [ ] Build proper payload shape matching order schema
-- [ ] Handle success: clear cart, toast, navigate
-- [ ] Handle error: toast with server message
-- [ ] Test full flow: Browse → Add to Cart → Checkout → Place Order
-
----
-
-#### Class 5: Customer Order History UI (`UserOrders.jsx`)
-
-**Topics to Learn/Revise**:
-- `useEffect` for data fetching on mount
-- Rendering lists with status badges (colored pills)
-- Date formatting with `new Date().toLocaleDateString()`
-
-**What to Build**:
-
-**File**: `client/src/components/userDashboard/UserOrders.jsx`
+**File to Update**: `client/src/components/userDashboard/UserOrders.jsx`
 
 ```
-UserOrders Component:
-├── Fetch orders on mount → GET /order/my-orders
-├── Loading state
-├── Order list with:
-│   ├── Order ID (last 8 chars)
-│   ├── Restaurant name
-│   ├── Items summary (name × qty)
-│   ├── Total amount
-│   ├── Order status badge (color-coded)
-│   │   ├── placed     → yellow
-│   │   ├── confirmed  → blue
-│   │   ├── preparing  → orange
-│   │   ├── on-way     → purple
-│   │   ├── delivered  → green
-│   │   └── cancelled  → red
-│   ├── Date & time
-│   └── Cancel button (only if status === "placed")
-└── Empty state if no orders
+UserOrders Component Structure:
+│
+├── useEffect → fetch GET /order/my-orders on mount
+├── Loading state (show <Loading /> component)
+├── Empty state ("You haven't placed any orders yet")
+│
+├── Order Cards List (map over orders):
+│   ├── Order ID (last 8 chars of _id)
+│   ├── Restaurant name (from populated restaurantID)
+│   ├── Items: "Item1 × 2, Item2 × 1"
+│   ├── Total: ₹{pricing.total}
+│   ├── Status Badge (color-coded):
+│   │   ├── placed     → bg-yellow-100 text-yellow-800
+│   │   ├── confirmed  → bg-blue-100 text-blue-800
+│   │   ├── preparing  → bg-orange-100 text-orange-800
+│   │   ├── ready      → bg-indigo-100 text-indigo-800
+│   │   ├── on-way     → bg-purple-100 text-purple-800
+│   │   ├── delivered  → bg-green-100 text-green-800
+│   │   └── cancelled  → bg-red-100 text-red-800
+│   ├── Date: new Date(createdAt).toLocaleDateString()
+│   └── Cancel Button (only if orderStatus === "placed")
+│       → calls PATCH /order/cancel/:id → refetch orders
+│
+└── Refetch function to refresh after cancel
 ```
 
 **Checklist**:
-- [ ] Rewrite `UserOrders.jsx` with real data fetching
-- [ ] Create order card component with all details
-- [ ] Add status badge with color coding
-- [ ] Add cancel order functionality (calls `PATCH /order/cancel/:id`)
-- [ ] Handle loading and empty states
-- [ ] Test: Place order → See it in order history → Cancel it
+- [ ] Rewrite `UserOrders.jsx` with data fetching from `/order/my-orders`
+- [ ] Build order card with all fields
+- [ ] Add color-coded status badges
+- [ ] Add cancel button (visible only for "placed" orders)
+- [ ] Wire cancel to `api.patch("/order/cancel/" + orderId)` → refetch
+- [ ] Test full flow: Place order → See in history → Cancel it
 
 ---
 
-### DAY 3 (Feb 21) — Restaurant Order Management
+### DAY 4 — Feb 22 (Sat) — Restaurant Order Management UI
 
-**Goal**: Restaurant manager can see incoming orders and update their status.
+**Session Goal**: Restaurant manager can see, accept, and manage incoming orders.
 
-#### Class 6: Restaurant Orders UI (`RestaurantOrders.jsx`)
+#### Hour 1–2: RestaurantOrders Component
 
-**Topics to Learn/Revise**:
-- Tab-based filtering (All / New / Preparing / Completed)
-- Status update dropdowns or buttons
-- Real-time UX (refresh on status change)
+**Topics**: Tab filtering, action buttons with API calls, state refresh after actions
 
-**What to Build**:
-
-**File**: `client/src/components/restaurantDashboard/RestaurantOrders.jsx`
+**File to Update**: `client/src/components/restaurantDashboard/RestaurantOrders.jsx`
 
 ```
-RestaurantOrders Component:
-├── Fetch orders on mount → GET /order/restaurant-orders
-├── Filter tabs: All | New (placed) | Confirmed | Preparing | On-Way | Delivered
-├── Each Order Card:
+RestaurantOrders Component Structure:
+│
+├── useEffect → fetch GET /order/restaurant-orders
+├── Filter Tabs Row:
+│   ├── All | New (placed) | Confirmed | Preparing | Ready | On-Way | Delivered
+│   └── Each tab filters the orders array by status
+│
+├── Order Cards (filtered list):
 │   ├── Order ID
-│   ├── Customer name
-│   ├── Items list with quantities
-│   ├── Total amount
-│   ├── Current status badge
-│   ├── Order time
+│   ├── Customer name (populated)
+│   ├── Items with quantities
+│   ├── Total ₹amount
 │   ├── Delivery address
-│   └── Action buttons:
-│       ├── Accept Order (placed → confirmed)
-│       ├── Start Preparing (confirmed → preparing)
-│       ├── Mark Ready / Assign Rider (preparing → on-way)
-│       └── Reject/Cancel Order
+│   ├── Status badge (same colors as customer side)
+│   ├── Order time (relative: "5 mins ago" or formatted date)
+│   │
+│   └── Action Buttons (based on current status):
+│       ├── status "placed"    → [Accept Order] [Reject]
+│       ├── status "confirmed" → [Start Preparing]
+│       ├── status "preparing" → [Mark Ready]
+│       ├── status "ready"     → (waiting for rider)
+│       ├── status "on-way"    → (rider is delivering)
+│       └── status "delivered" → (completed, no action)
+│
 └── Empty state per tab
 ```
 
+**Each action button calls**: `api.patch("/order/update-status/" + orderId, { orderStatus: newStatus })`
+
 **Checklist**:
-- [ ] Rewrite `RestaurantOrders.jsx` with complete UI
-- [ ] Fetch orders from `GET /order/restaurant-orders`
-- [ ] Implement tab filtering by order status
-- [ ] Add action buttons for each status transition
-- [ ] Each button calls `PATCH /order/update-status/:id` with new status
-- [ ] Refresh order list after status update
-- [ ] Test: Customer places order → Restaurant sees it → Accepts → Prepares → Marks ready
+- [ ] Rewrite `RestaurantOrders.jsx` with full functionality
+- [ ] Fetch orders from API on mount
+- [ ] Implement filter tabs
+- [ ] Build order cards with customer details
+- [ ] Add action buttons per status
+- [ ] Each action calls API → refetch orders
+- [ ] Test: Place order as customer → Login as manager → See & manage it
+
+#### Hour 3: Restaurant Overview + Earnings (Real Data)
+
+**File to Update**: `client/src/components/restaurantDashboard/RestaurantOverview.jsx`
+
+```
+Changes:
+├── Fetch restaurant orders in useEffect
+├── Calculate from orders:
+│   ├── Total Orders = orders.length
+│   ├── Active Orders = orders.filter(o => !["delivered","cancelled"].includes(o.orderStatus)).length
+│   ├── Total Earnings = orders.filter(o => o.orderStatus === "delivered").reduce(sum pricing.total)
+│   └── Rating = keep hardcoded 4.5 for now
+├── Recent Orders = orders.slice(0, 5) → show in table
+```
+
+**File to Update**: `client/src/components/restaurantDashboard/RestaurantEarnings.jsx`
+
+```
+Changes:
+├── Fetch orders with status "delivered"
+├── Show earnings list with: Order ID, Customer, Amount, Date
+├── Summary: Total Earnings, This Month, Order Count
+```
+
+**Checklist**:
+- [ ] Update `RestaurantOverview.jsx` — fetch orders, compute stats, display
+- [ ] Update `RestaurantEarnings.jsx` — show delivered orders as earnings
+- [ ] Test with delivered orders
 
 ---
 
-#### Class 7: Restaurant Overview & Earnings (Real Data)
+### DAY 5 — Feb 23 (Sun) — Rider Backend + Router
 
-**Topics to Learn/Revise**:
-- Aggregation queries (or simple JS calculation from orders)
-- Dashboard stat cards
+**Session Goal**: Build the complete rider backend so the dashboard can consume it.
 
-**What to Build**:
+#### Hour 1–2: Rider Controller
 
-Create a new backend endpoint or compute on frontend.
+**Topics**: Reusing auth middleware, filtering by riderID/orderStatus, updating nested fields
 
-**Option A (Simpler — frontend calculation)**:
-- Fetch all restaurant orders
-- Calculate: Total Orders, Active Orders, Total Earnings, Delivered count
-- Display in the existing stat cards in `RestaurantOverview.jsx`
+**File to Create**: `server/src/controllers/riderController.js`
 
-**Option B (Better — backend endpoint)**:
-- Create `GET /order/restaurant-stats` endpoint
-- Returns: totalOrders, activeOrders, totalEarnings, todayOrders, weeklyEarnings
-
-**Also update** `RestaurantEarnings.jsx`:
-- Display list of delivered orders with amounts
-- Show daily/weekly totals
-
-**Checklist**:
-- [ ] Add stats API or calculate on frontend from orders data
-- [ ] Update `RestaurantOverview.jsx` — replace hardcoded "0" with real numbers
-- [ ] Update `RestaurantEarnings.jsx` — show earnings from delivered orders
-- [ ] Add "Recent Orders" section in overview with last 5 orders
-- [ ] Test: Complete a few orders → Check overview stats update
-
----
-
-### DAY 4 (Feb 22) — Rider Dashboard + Delivery Flow
-
-**Goal**: Build the complete rider experience — dashboard, order acceptance, delivery updates.
-
-#### Class 8: Rider Controller + Router (Backend)
-
-**Topics to Learn/Revise**:
-- Reusing existing middleware (`Protect`, `PartnerProtect`)
-- Query filtering with multiple conditions
-
-**What to Build**:
-
-**File**: `server/src/controllers/riderController.js`
-
-| Function | Purpose |
-|----------|---------|
-| `getAvailableOrders` | Get orders with status "preparing" that have no rider assigned (riderID is null) |
-| `acceptOrder` | Rider accepts a delivery — sets riderID and status to "on-way" |
-| `completeDelivery` | Rider marks order as "delivered" |
-| `getRiderDeliveries` | Get all orders assigned to this rider |
-
-**File**: `server/src/routers/riderRouter.js`
-
-```
-GET    /rider/available-orders     → Protect + PartnerProtect → getAvailableOrders
-PATCH  /rider/accept-order/:id     → Protect + PartnerProtect → acceptOrder
-PATCH  /rider/complete-delivery/:id→ Protect + PartnerProtect → completeDelivery
-GET    /rider/my-deliveries        → Protect + PartnerProtect → getRiderDeliveries
-```
+| Function | Logic |
+|----------|-------|
+| `getAvailableOrders` | `Order.find({ orderStatus: "ready", riderID: null }).populate("restaurantID customerID")` |
+| `acceptOrder` | Find order by ID → verify `riderID === null` and `orderStatus === "ready"` → set `riderID = req.user._id`, `orderStatus = "on-way"` → save |
+| `completeDelivery` | Find order by ID → verify `riderID === req.user._id` and `orderStatus === "on-way"` → set `orderStatus = "delivered"` → save |
+| `getRiderDeliveries` | `Order.find({ riderID: req.user._id }).sort({ createdAt: -1 }).populate("restaurantID customerID")` |
 
 **Checklist**:
 - [ ] Create `server/src/controllers/riderController.js`
-- [ ] Create `server/src/routers/riderRouter.js`
-- [ ] Register in `server/index.js` → `app.use("/rider", RiderRouter)`
-- [ ] Implement all 4 functions
-- [ ] Test with Postman
+- [ ] Implement all 4 functions with proper validation
+- [ ] `acceptOrder` must check `riderID === null` to prevent race condition
+
+#### Hour 2–3: Rider Router + Register + Test
+
+**File to Create**: `server/src/routers/riderRouter.js`
+
+```
+GET    /rider/available-orders      → Protect, PartnerProtect → getAvailableOrders
+PATCH  /rider/accept-order/:id      → Protect, PartnerProtect → acceptOrder
+PATCH  /rider/complete-delivery/:id → Protect, PartnerProtect → completeDelivery
+GET    /rider/my-deliveries         → Protect, PartnerProtect → getRiderDeliveries
+```
+
+**File to Update**: `server/index.js`
+- Import `RiderRouter`
+- Add `app.use("/rider", RiderRouter)`
+
+**Checklist**:
+- [ ] Create router with all 4 routes
+- [ ] Register in `index.js`
+- [ ] Test all endpoints with Postman:
+  - Create order as customer → Accept as manager → Prepare → Mark Ready
+  - Login as rider → See available orders → Accept → Complete delivery
+- [ ] Fix any bugs
 
 ---
 
-#### Class 9: Rider Dashboard Frontend
+### DAY 6 — Feb 24 (Mon) — Rider Dashboard Frontend
 
-**Topics to Learn/Revise**:
-- Sidebar component creation (follow UserSideBar/RestaurantSideBar pattern)
-- Conditional rendering based on active tab
+**Session Goal**: Build all rider dashboard components and the dashboard page.
 
-**What to Build**:
+#### Hour 1: RiderSideBar + Dashboard Shell
 
-**File**: `client/src/pages/dashboards/RiderDashboard.jsx`
+**Topics**: Reusing component patterns from existing sidebars
 
-Build similar to UserDashboard and RestaurantDashboard with:
+**New Folder**: `client/src/components/riderDashboard/`
+
+**File to Create**: `client/src/components/riderDashboard/RiderSideBar.jsx`
+- Copy structure from `RestaurantSideBar.jsx`
+- Menu items: Overview, Available Orders, My Deliveries, Profile, Help Desk
+
+**File to Update**: `client/src/pages/dashboards/RiderDashboard.jsx`
+- Add role check (`role !== "partner"` → show error)
+- Add login check
+- Add sidebar + tab switching (same pattern as UserDashboard)
+- Tabs: overview, available, deliveries, profile, helpdesk
+
+**Checklist**:
+- [ ] Create `RiderSideBar.jsx`
+- [ ] Rewrite `RiderDashboard.jsx` with sidebar + tab switching
+- [ ] Verify routing works
+
+#### Hour 2: RiderAvailableOrders + RiderMyDeliveries
+
+**File to Create**: `client/src/components/riderDashboard/RiderAvailableOrders.jsx`
 
 ```
-RiderDashboard Layout:
-├── RiderSideBar (new component)
-│   ├── Overview
-│   ├── Available Orders
-│   ├── My Deliveries
-│   ├── Profile
-│   └── Help Desk
-├── RiderOverview (new component)
-│   ├── Today's deliveries count
-│   ├── Total deliveries
-│   ├── Active delivery (currently on-way)
-│   └── Earnings
-├── RiderAvailableOrders (new component)
-│   ├── List of orders with status "preparing" and no rider
-│   ├── Restaurant name, items, delivery address
-│   └── "Accept Delivery" button
-├── RiderMyDeliveries (new component)
-│   ├── Active delivery (on-way) with "Mark Delivered" button
-│   ├── Completed deliveries history
-│   └── Status badges
-└── RiderProfile → Reuse pattern from UserProfile
+RiderAvailableOrders:
+├── Fetch GET /rider/available-orders
+├── Order Cards:
+│   ├── Restaurant name & address
+│   ├── Customer delivery address
+│   ├── Items list
+│   ├── Total amount
+│   └── [Accept Delivery] button → PATCH /rider/accept-order/:id → refetch
+└── Empty state: "No orders available right now"
 ```
 
-**New Files to Create**:
+**File to Create**: `client/src/components/riderDashboard/RiderMyDeliveries.jsx`
+
 ```
-client/src/components/riderDashboard/
-├── RiderSideBar.jsx
-├── RiderOverview.jsx
-├── RiderAvailableOrders.jsx
-├── RiderMyDeliveries.jsx
-└── RiderProfile.jsx
+RiderMyDeliveries:
+├── Fetch GET /rider/my-deliveries
+├── Active Delivery Section (orderStatus === "on-way"):
+│   ├── Full order details
+│   ├── Pickup: Restaurant address
+│   ├── Dropoff: Customer address
+│   └── [Mark Delivered] button → PATCH /rider/complete-delivery/:id → refetch
+├── Completed Deliveries (orderStatus === "delivered"):
+│   └── List with order details, date, amount
+└── Empty states for both sections
 ```
 
 **Checklist**:
-- [ ] Create `client/src/components/riderDashboard/` folder
-- [ ] Create `RiderSideBar.jsx` (copy pattern from RestaurantSideBar, change menu items)
-- [ ] Create `RiderOverview.jsx` with stat cards
-- [ ] Create `RiderAvailableOrders.jsx` — fetch from `/rider/available-orders`, accept button
-- [ ] Create `RiderMyDeliveries.jsx` — fetch from `/rider/my-deliveries`, mark delivered button
-- [ ] Create `RiderProfile.jsx` (can reuse UserProfile pattern)
-- [ ] Update `RiderDashboard.jsx` to use sidebar + tab switching
-- [ ] Test: Restaurant marks order ready → Rider sees it → Accepts → Delivers
+- [ ] Create `RiderAvailableOrders.jsx`
+- [ ] Create `RiderMyDeliveries.jsx`
+- [ ] Wire accept and complete buttons to APIs
+- [ ] Test the complete rider flow
+
+#### Hour 3: RiderOverview + RiderProfile
+
+**File to Create**: `client/src/components/riderDashboard/RiderOverview.jsx`
+
+```
+RiderOverview:
+├── Stat Cards:
+│   ├── Total Deliveries (all delivered orders count)
+│   ├── Active Delivery (on-way count — should be 0 or 1)
+│   ├── Today's Deliveries
+│   └── Earnings (sum of delivered orders — could show delivery charges)
+└── Recent Deliveries (last 5)
+```
+
+**File to Create**: `client/src/components/riderDashboard/RiderProfile.jsx`
+- Reuse the same pattern as `UserProfile.jsx` (calls `/user/update`, `/user/changePhoto`, `/user/resetPassword`)
+
+**Checklist**:
+- [ ] Create `RiderOverview.jsx` with stats from deliveries data
+- [ ] Create `RiderProfile.jsx` (copy UserProfile pattern)
+- [ ] Test rider dashboard end-to-end
 
 ---
 
-### DAY 5 (Feb 23) — Full Order Flow Testing + Fix Issues
+### DAY 7 — Feb 25 (Tue) — E2E Testing: Full Order Flow
 
-**Goal**: Test the complete end-to-end flow and fix any bugs.
+**Session Goal**: Test the complete Customer → Restaurant → Rider flow, fix all bugs.
 
-#### Class 10: End-to-End Order Flow Testing
+#### 3 Hours: Systematic Testing
 
-**The Complete Flow to Test**:
+**The Complete Flow**:
 
 ```
-Step 1: Customer browses restaurants           → OrderNow page
-Step 2: Customer views menu & adds to cart     → RestaurantDisplayMenu page
-Step 3: Customer goes to checkout              → CheckoutPage
-Step 4: Customer places order                  → POST /order/create
-Step 5: Restaurant sees new order              → RestaurantOrders (status: "placed")
-Step 6: Restaurant accepts order               → PATCH status → "confirmed"
-Step 7: Restaurant starts preparing            → PATCH status → "preparing"
-Step 8: Rider sees available order             → RiderAvailableOrders
-Step 9: Rider accepts delivery                 → PATCH /rider/accept-order
-Step 10: Customer sees "on-way" status         → UserOrders
-Step 11: Rider completes delivery              → PATCH /rider/complete-delivery
-Step 12: Order status → "delivered"            → All dashboards update
+Step  1: Customer registers/logs in
+Step  2: Customer browses restaurants on /order-now
+Step  3: Customer clicks a restaurant → sees menu
+Step  4: Customer adds items to cart
+Step  5: Customer goes to checkout
+Step  6: Customer places order (COD for now)
+         ✓ Order created in DB with status "placed"
+Step  7: Customer sees order in UserOrders with status "placed"
+Step  8: Customer cancels one order → status becomes "cancelled"
+Step  9: Customer places another order
+
+Step 10: Login as restaurant manager
+Step 11: Manager sees order in RestaurantOrders (status "placed")
+Step 12: Manager clicks "Accept" → status "confirmed"
+Step 13: Manager clicks "Start Preparing" → status "preparing"
+Step 14: Manager clicks "Mark Ready" → status "ready"
+Step 15: RestaurantOverview shows updated stats
+Step 16: RestaurantEarnings shows earnings (after delivery)
+
+Step 17: Login as rider (partner role)
+Step 18: Rider sees order in Available Orders (status "ready")
+Step 19: Rider clicks "Accept Delivery" → status "on-way"
+Step 20: Rider clicks "Mark Delivered" → status "delivered"
+
+Step 21: Login as customer again
+Step 22: Customer sees order with status "delivered"
+Step 23: User dashboard overview shows correct stats
+```
+
+**Bug Tracking Table**:
+
+| # | Bug Description | File | Fix Status |
+|---|-----------------|------|------------|
+| 1 | | | ☐ |
+| 2 | | | ☐ |
+| 3 | | | ☐ |
+| 4 | | | ☐ |
+| 5 | | | ☐ |
+
+**Checklist**:
+- [ ] Create test accounts: 1 customer, 1 manager, 1 partner (rider)
+- [ ] Run through all 23 steps
+- [ ] Log every bug found
+- [ ] Fix all bugs
+- [ ] Re-test after fixes
+- [ ] Verify data consistency across all dashboards
+
+---
+
+### DAY 8 — Feb 26 (Wed) — Search & Filter (Backend + Frontend)
+
+**Session Goal**: Add restaurant search and filtering to OrderNow page.
+
+#### Hour 1: Search Backend
+
+**Topics**: MongoDB `$regex` for text search, `$or` queries, query parameters
+
+**File to Update**: `server/src/controllers/publicControlller.js`
+
+**New Function**: `searchRestaurants`
+
+```javascript
+// Query params: q (search text), cuisine, city
+// Logic:
+//   filter = { role: "manager" }
+//   if (q) → filter.$or = [
+//     { restaurantName: { $regex: q, $options: "i" } },
+//     { cuisine: { $regex: q, $options: "i" } },
+//     { fullName: { $regex: q, $options: "i" } }
+//   ]
+//   if (cuisine) → filter.cuisine = { $regex: cuisine, $options: "i" }
+//   if (city) → filter.city = { $regex: city, $options: "i" }
+//   User.find(filter).select("-password")
+```
+
+**File to Update**: `server/src/routers/publicRouter.js`
+- Add `GET /public/search-restaurants` → `searchRestaurants`
+
+**Checklist**:
+- [ ] Add `searchRestaurants` to public controller
+- [ ] Add route in public router
+- [ ] Test with Postman: `/public/search-restaurants?q=pizza`, `?cuisine=indian`, `?city=delhi`
+
+#### Hour 2–3: Search Frontend
+
+**Topics**: Controlled inputs, query building, debouncing (optional)
+
+**File to Update**: `client/src/pages/OrderNow.jsx`
+
+```
+Updated OrderNow Page Structure:
+│
+├── Search Section (new — at top):
+│   ├── Text Input: placeholder "Search restaurants, cuisines..."
+│   ├── Cuisine Dropdown: All | Indian | Chinese | Italian | Mexican | etc.
+│   ├── City Input: text field
+│   ├── [Search] button → calls /public/search-restaurants with params
+│   └── [Clear] button → resets to show all restaurants
+│
+├── Results Info: "Showing X restaurants" or "No restaurants found"
+│
+└── Restaurant Cards Grid (existing design — no change)
 ```
 
 **Checklist**:
-- [ ] Test complete flow with 3 different user accounts (customer, manager, partner)
-- [ ] Fix any API errors found
-- [ ] Fix any frontend bugs
-- [ ] Verify status transitions work correctly
-- [ ] Verify data shows correctly on all dashboards
-- [ ] Fix cancel order flow
-- [ ] Ensure cart clears properly after order
-- [ ] Ensure order appears immediately after placement
+- [ ] Add search bar UI at top of `OrderNow.jsx`
+- [ ] Add state for searchQuery, cuisineFilter, cityFilter
+- [ ] On Search click → call `api.get("/public/search-restaurants", { params: { q, cuisine, city } })`
+- [ ] Update restaurant list with results
+- [ ] Clear button resets to `fetctAllRestaurants()` (existing function)
+- [ ] Handle "no results" gracefully
+- [ ] Test: Search by name → Filter by cuisine → Clear → Combine filters
 
 ---
 
-### DAY 6 (Feb 24) — Search & Filter Functionality
+### DAY 9 — Feb 27 (Thu) — Razorpay Backend
 
-**Goal**: Add search and filtering to the OrderNow page and restaurant menu.
+**Session Goal**: Set up Razorpay on the server — config, create order, verify payment.
 
-#### Class 11: Search & Filter Backend
+#### Pre-requisites (Do before starting)
+- Sign up at https://razorpay.com
+- Go to Dashboard → Settings → API Keys → Generate Test Keys
+- Note down `key_id` (starts with `rzp_test_`) and `key_secret`
 
-**Topics to Learn/Revise**:
-- MongoDB text search / regex search
-- Query string parameters in Express (`req.query`)
-- Mongoose `.find()` with dynamic filter objects
+#### Hour 1: Razorpay Config + Install
 
-**What to Build**:
-
-**Update** `server/src/controllers/publicControlller.js`:
-
-| Function | Endpoint | Purpose |
-|----------|----------|---------|
-| `searchRestaurants` | `GET /public/search-restaurants?q=&cuisine=&city=` | Search by name, cuisine, city |
-| `searchMenuItems` | `GET /public/search-menu?q=&type=&minPrice=&maxPrice=` | Search menu items across all restaurants |
-
-**Checklist**:
-- [ ] Add `searchRestaurants` function — supports query params: `q` (name search), `cuisine`, `city`
-- [ ] Add `searchMenuItems` function — supports query params: `q` (item name), `type` (veg/non-veg), `minPrice`, `maxPrice`
-- [ ] Use MongoDB `$regex` with case-insensitive flag for text search
-- [ ] Add new routes in `publicRouter.js`
-- [ ] Test with Postman
-
----
-
-#### Class 12: Search & Filter Frontend
-
-**Topics to Learn/Revise**:
-- Controlled form inputs for search
-- Debouncing search input (wait 300ms after user stops typing)
-- Dynamic query string building
-- Conditional rendering based on search results
-
-**What to Build**:
-
-**Update** `client/src/pages/OrderNow.jsx`:
-
-```
-Updated OrderNow Page:
-├── Search Bar (top section)
-│   ├── Text input for restaurant/food name
-│   ├── Cuisine filter dropdown (Indian, Chinese, Italian, etc.)
-│   ├── City filter dropdown
-│   └── Search button + Clear filters button
-├── Results Section
-│   ├── Result count
-│   ├── Restaurant cards grid (existing design)
-│   └── "No results found" state
-└── Loading state during search
+**Terminal**:
+```bash
+cd server
+npm install razorpay
 ```
 
-**Checklist**:
-- [ ] Add search bar UI to `OrderNow.jsx`
-- [ ] Add cuisine filter dropdown
-- [ ] Add city filter input
-- [ ] Wire search to `GET /public/search-restaurants?q=&cuisine=&city=`
-- [ ] Show filtered results
-- [ ] Add clear filters button to reset
-- [ ] Handle empty search results gracefully
-- [ ] Test: Search by restaurant name, filter by cuisine, combine filters
+**File to Create**: `server/src/config/razorpay.js`
+```javascript
+import Razorpay from "razorpay";
+import dotenv from "dotenv";
+dotenv.config();
 
----
+const razorpayInstance = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 
-### DAY 7 (Feb 25) — Payment Gateway Integration (Razorpay)
+export default razorpayInstance;
+```
 
-**Goal**: Integrate Razorpay payment gateway for real payments.
+**Update `.env`**:
+```
+RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxxxx
+RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxx
+```
 
-#### Class 13: Razorpay Backend Setup
+#### Hour 2–3: Payment Controller + Router
 
-**Topics to Learn/Revise**:
-- Razorpay Node.js SDK
-- Creating Razorpay orders
-- Verifying payment signatures (crypto + HMAC)
-- Webhook handling
+**Topics**: Razorpay order creation, HMAC SHA256 signature verification, crypto module
 
-**Prerequisites**:
-- Create Razorpay account (https://razorpay.com)
-- Get API Key ID and Key Secret from Razorpay Dashboard → Settings → API Keys
-- Use **Test Mode** keys for development
-
-**What to Build**:
-
-1. **Install**: `npm install razorpay` in server folder
-
-2. **Config File**: `server/src/config/razorpay.js`
-   - Initialize Razorpay instance with key_id and key_secret from `.env`
-
-3. **Payment Controller**: `server/src/controllers/paymentController.js`
+**File to Create**: `server/src/controllers/paymentController.js`
 
 | Function | Purpose |
 |----------|---------|
-| `createPaymentOrder` | Create a Razorpay order with amount, currency, receipt |
-| `verifyPayment` | Verify payment signature after customer pays |
-| `getPaymentDetails` | Fetch payment details by paymentID |
+| `createPaymentOrder` | 1. Receive `orderId` + `amount` from frontend.<br>2. Create Razorpay order via `razorpayInstance.orders.create({ amount: amount*100, currency: "INR", receipt: orderId })`.<br>3. Return `{ razorpayOrderId, amount, key_id }` |
+| `verifyPayment` | 1. Receive `razorpay_order_id`, `razorpay_payment_id`, `razorpay_signature`, `orderId`.<br>2. Generate expected signature: `crypto.createHmac("sha256", key_secret).update(razorpay_order_id + "\|" + razorpay_payment_id).digest("hex")`.<br>3. Compare with received signature.<br>4. If match → update Order's `paymentStatus = "paid"`, `paymentID = razorpay_payment_id` → save.<br>5. Return success. |
 
-4. **Payment Router**: `server/src/routers/paymentRouter.js`
+**File to Create**: `server/src/routers/paymentRouter.js`
 
 ```
-POST   /payment/create-order     → Protect + CustomerProtect → createPaymentOrder
-POST   /payment/verify            → Protect + CustomerProtect → verifyPayment
-GET    /payment/:id               → Protect → getPaymentDetails
+POST   /payment/create-order  → Protect, CustomerProtect → createPaymentOrder
+POST   /payment/verify        → Protect, CustomerProtect → verifyPayment
 ```
 
-5. **Update `.env`**:
-```
-RAZORPAY_KEY_ID=rzp_test_xxxxx
-RAZORPAY_KEY_SECRET=xxxxx
-```
+**File to Update**: `server/index.js`
+- Import and register `app.use("/payment", PaymentRouter)`
 
 **Checklist**:
 - [ ] Install `razorpay` package
-- [ ] Create `server/src/config/razorpay.js`
-- [ ] Create `server/src/controllers/paymentController.js`
-- [ ] `createPaymentOrder` → calls `razorpayInstance.orders.create({ amount, currency, receipt })`
-- [ ] `verifyPayment` → validates `razorpay_signature` using HMAC SHA256
-- [ ] On successful verification → update order's `paymentStatus` to "paid" and `paymentID`
-- [ ] Create `server/src/routers/paymentRouter.js`
-- [ ] Register in `index.js` → `app.use("/payment", PaymentRouter)`
-- [ ] Test with Postman
+- [ ] Create `razorpay.js` config
+- [ ] Add env variables
+- [ ] Create `paymentController.js` with both functions
+- [ ] Create `paymentRouter.js`
+- [ ] Register in `index.js`
+- [ ] Test `createPaymentOrder` with Postman
+- [ ] Test `verifyPayment` with Postman (manual signature for now)
 
 ---
 
-#### Class 14: Razorpay Frontend Integration
+### DAY 10 — Feb 28 (Fri) — Razorpay Frontend
 
-**Topics to Learn/Revise**:
-- Loading Razorpay checkout script dynamically
-- Razorpay Checkout options object
-- Handling payment success/failure callbacks
+**Session Goal**: Integrate Razorpay checkout popup into the checkout page.
 
-**What to Build**:
+#### Hour 1: Load Razorpay Script + Understand Flow
 
-**Update** `client/src/pages/CheckoutPage.jsx`:
+**File to Update**: `client/index.html`
+```html
+<!-- Add before </head> -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+```
+
+**The Payment Flow**:
+```
+1. Customer clicks "Place Order"
+2. Frontend calls POST /order/create → gets back { order } with order._id
+3. If paymentMethod !== "cod":
+   a. Frontend calls POST /payment/create-order → gets { razorpayOrderId, amount, key_id }
+   b. Open Razorpay popup with these details
+   c. Customer enters card/UPI details in popup
+   d. On success → Razorpay returns { razorpay_order_id, razorpay_payment_id, razorpay_signature }
+   e. Frontend calls POST /payment/verify with above + orderId
+   f. Backend verifies signature → updates order payment status
+   g. Navigate to orders page with success toast
+4. If paymentMethod === "cod":
+   a. Skip Razorpay
+   b. Order already created with paymentStatus "pending"
+   c. Navigate to orders page with success toast
+```
+
+#### Hour 2–3: Update CheckoutPage.jsx
+
+**Topics**: Dynamic Razorpay options, promise-based popup handling
+
+**File to Update**: `client/src/pages/CheckoutPage.jsx`
 
 ```
-Updated handlePlaceOrder() Flow:
-1. Call POST /order/create → get order back with _id
-2. Call POST /payment/create-order → get razorpayOrderId, amount, key
-3. Open Razorpay Checkout popup with options:
-   ├── key: RAZORPAY_KEY_ID
-   ├── amount: amount from backend
-   ├── order_id: razorpayOrderId
-   ├── prefill: { name, email, contact } from user
-   └── handler: (response) => verify payment
-4. On payment success → Call POST /payment/verify with:
-   ├── razorpay_order_id
-   ├── razorpay_payment_id
-   └── razorpay_signature
-5. On verification success → Navigate to order success page
-6. On payment failure → Show error toast
-
-For COD:
-- Skip Razorpay popup
-- Create order with paymentMethod "cod" and paymentStatus "pending"
+Updated handlePlaceOrder():
+│
+├── Call POST /order/create → get createdOrder
+│
+├── IF paymentMethod === "cod":
+│   └── toast.success → clear cart → navigate
+│
+└── ELSE (online payment):
+    ├── Call POST /payment/create-order with { orderId, amount: total }
+    ├── Get back { razorpayOrderId, amount, key_id }
+    ├── Open Razorpay Checkout:
+    │   options = {
+    │     key: key_id,
+    │     amount: amount,
+    │     currency: "INR",
+    │     name: "Cravings",
+    │     description: "Food Order Payment",
+    │     order_id: razorpayOrderId,
+    │     prefill: { name: user.fullName, email: user.email, contact: user.mobileNumber },
+    │     handler: async (response) => {
+    │       // Payment success callback
+    │       await api.post("/payment/verify", {
+    │         razorpay_order_id: response.razorpay_order_id,
+    │         razorpay_payment_id: response.razorpay_payment_id,
+    │         razorpay_signature: response.razorpay_signature,
+    │         orderId: createdOrder._id
+    │       });
+    │       toast.success("Payment successful!");
+    │       localStorage.removeItem("cart");
+    │       navigate("/user-dashboard");
+    │     }
+    │   }
+    └── new window.Razorpay(options).open()
 ```
 
 **Checklist**:
-- [ ] Load Razorpay script in `index.html`: `<script src="https://checkout.razorpay.com/v1/checkout.js"></script>`
-- [ ] Update `handlePlaceOrder()` to handle online payment vs COD
-- [ ] Implement Razorpay popup opening with proper options
-- [ ] Handle success callback → verify payment → navigate
-- [ ] Handle failure callback → show error
-- [ ] Keep COD option working without Razorpay
-- [ ] Test with Razorpay test cards (4111 1111 1111 1111)
+- [ ] Add Razorpay script to `index.html`
+- [ ] Update `handlePlaceOrder()` to handle COD vs online payment
+- [ ] Implement Razorpay popup opening
+- [ ] Handle success callback → verify → navigate
+- [ ] Handle failure/dismiss → show error toast
+- [ ] Test with Razorpay test card: `4111 1111 1111 1111`, Expiry: any future, CVV: any 3 digits
 
 ---
 
-### DAY 8 (Feb 26) — User Dashboard Completion + Transaction History
+### DAY 11 — Mar 1 (Sun) — User Dashboard Completion
 
-**Goal**: Complete all remaining user dashboard components.
+**Session Goal**: Complete UserOverview, UserTransactions, and HelpDesk components.
 
-#### Class 15: User Overview Dashboard
+#### Hour 1: User Overview
 
-**Topics to Learn/Revise**:
-- Stat card components
-- Data aggregation on frontend
-
-**What to Build**:
-
-**File**: `client/src/components/userDashboard/UserOverview.jsx`
+**File to Update**: `client/src/components/userDashboard/UserOverview.jsx`
 
 ```
-UserOverview Component:
-├── Stat Cards Row:
-│   ├── Total Orders (count from orders API)
-│   ├── Active Orders (placed/confirmed/preparing/on-way)
-│   ├── Total Spent (sum of all delivered orders)
-│   └── Cancelled Orders count
-├── Recent Orders (last 5 orders)
-│   ├── Order ID, Restaurant, Amount, Status, Date
-│   └── Link to full orders tab
-└── Quick Actions
-    ├── "Order Now" button → Navigate to /order-now
-    └── "View All Orders" button → Switch to orders tab
+UserOverview:
+├── Fetch orders from /order/my-orders
+├── Stat Cards (4 cards in a row):
+│   ├── Total Orders = orders.length
+│   ├── Active Orders = filter(status not delivered/cancelled).length
+│   ├── Total Spent = filter(delivered).reduce(sum, pricing.total)
+│   └── Cancelled = filter(cancelled).length
+├── Recent Orders (last 5):
+│   └── Mini table: Order ID, Restaurant, Amount, Status badge, Date
+└── Quick Actions:
+    ├── [Order Now] → navigate("/order-now")
+    └── [View All Orders] → setActive("orders") via props or callback
 ```
 
 **Checklist**:
-- [ ] Fetch orders in `UserOverview.jsx`
-- [ ] Calculate stats from orders data
-- [ ] Build stat cards UI
-- [ ] Show last 5 recent orders
+- [ ] Rewrite `UserOverview.jsx` with order fetching and stat calculation
+- [ ] Build stat cards (reuse RestaurantOverview design pattern)
+- [ ] Add recent orders mini-table
 - [ ] Add quick action buttons
 
----
+#### Hour 2: User Transactions
 
-#### Class 16: User Transactions + Payment History
-
-**Topics to Learn/Revise**:
-- Filtering data by date ranges
-- Table component for transaction lists
-
-**What to Build**:
-
-**File**: `client/src/components/userDashboard/UserTransactions.jsx`
+**File to Update**: `client/src/components/userDashboard/UserTransactions.jsx`
 
 ```
-UserTransactions Component:
-├── Transaction List:
-│   ├── Order ID
-│   ├── Payment Method (UPI / Card / COD)
-│   ├── Amount
-│   ├── Payment Status (paid / pending / failed / refunded)
-│   ├── Date & Time
-│   └── Restaurant Name
-├── Summary:
-│   ├── Total Spent (all time)
-│   ├── This Month Spent
-│   └── Average Order Value
-└── Filters:
-    ├── By date range
-    └── By payment status
+UserTransactions:
+├── Fetch orders (reuse /order/my-orders — transactions come from orders)
+├── Transaction Table:
+│   ├── # (index)
+│   ├── Order ID (last 8 chars)
+│   ├── Restaurant Name
+│   ├── Amount (pricing.total)
+│   ├── Payment Method (credit-card/upi/wallet/cod)
+│   ├── Payment Status badge (pending/paid/failed/refunded)
+│   └── Date
+├── Summary Bar:
+│   ├── Total Spent (sum of "paid" orders)
+│   ├── Pending Payments (sum of "pending" payments)
+│   └── Total Transactions count
+└── Empty state
 ```
 
 **Checklist**:
-- [ ] Update `UserTransactions.jsx` with real order data (transactions come from orders with payment info)
+- [ ] Rewrite `UserTransactions.jsx`
+- [ ] Fetch from `/order/my-orders`
 - [ ] Build transaction table/cards
 - [ ] Add summary section
-- [ ] Add basic date filtering
-- [ ] Test with multiple orders
+- [ ] Test with mix of COD and paid orders
 
----
+#### Hour 3: HelpDesk Forms (User + Restaurant)
 
-#### Class 17: User & Restaurant HelpDesk
-
-**What to Build**:
-
-Simple help desk that submits to the existing Contact/support system.
-
-**File**: `client/src/components/userDashboard/UserHelpDesk.jsx`
-**File**: `client/src/components/restaurantDashboard/RestaurantHelpDesk.jsx`
+**File to Update**: `client/src/components/userDashboard/UserHelpDesk.jsx`
+**File to Update**: `client/src/components/restaurantDashboard/RestaurantHelpDesk.jsx`
 
 ```
-HelpDesk Component:
-├── Submit Support Ticket form:
-│   ├── Subject dropdown (Order Issue, Payment Issue, Account Issue, Other)
-│   ├── Order ID (optional, dropdown of recent orders)
-│   ├── Message textarea
-│   └── Submit button → POST /public/new-contact
-└── Support Info:
+HelpDesk Component (same for both):
+├── Support Form:
+│   ├── Subject: dropdown (Order Issue / Payment Issue / Account Issue / Other)
+│   ├── Message: textarea
+│   └── [Submit] button → POST /public/new-contact with { fullName: user.fullName, email: user.email, mobileNumber: user.mobileNumber, message: `[${subject}] ${message}` }
+├── Success message after submit
+└── Contact Info:
     ├── Email: support@cravings.com
     ├── Phone: +91-XXXXXXXXXX
-    └── Hours: 24/7
+    └── Response time: 24-48 hours
 ```
 
 **Checklist**:
-- [ ] Update `UserHelpDesk.jsx` with form UI
-- [ ] Update `RestaurantHelpDesk.jsx` with form UI
-- [ ] Wire form submission to contact API
-- [ ] Test form submission
+- [ ] Update `UserHelpDesk.jsx` with form + contact info
+- [ ] Update `RestaurantHelpDesk.jsx` with same pattern
+- [ ] Wire form to `/public/new-contact` API
+- [ ] Test submission
 
 ---
 
-### DAY 9 (Feb 27) — Polish, Edge Cases & Order Status Updates
+### DAY 12 — Mar 2 (Mon) — Edge Cases + Order Polling
 
-**Goal**: Handle edge cases, improve UX, add real-time-like updates.
+**Session Goal**: Handle edge cases and add order status auto-refresh.
 
-#### Class 18: Order Status Polling + Notifications
+#### Hour 1: Backend Validations & Edge Cases
 
-**Topics to Learn/Revise**:
-- `setInterval` for polling
-- Toast notifications on status change
-- Comparing previous vs new data
+**Topics**: Data integrity, race conditions, price verification
 
-**What to Build**:
-
-Add auto-refresh to order status on customer side:
-- Poll `GET /order/my-orders` every 30 seconds when user is on orders tab
-- Compare order statuses — if any changed, show a toast notification
-- Clean up interval on component unmount
-
-**Checklist**:
-- [ ] Add polling in `UserOrders.jsx` with `setInterval` (30 sec)
-- [ ] Detect status changes and show toast
-- [ ] Clean up interval with `useEffect` cleanup function
-- [ ] Add "Refresh" button for manual refresh
-
----
-
-#### Class 19: Edge Cases & Validation
-
-**What to Fix/Add**:
+**Files to Update**: `server/src/controllers/orderController.js`, `riderController.js`
 
 ```
 Edge Cases to Handle:
-├── Cart with unavailable items → Check item availability before order
-├── Empty cart navigation to checkout → Already handled, verify
-├── Order from closed restaurant → Add validation
-├── Double order submission → Disable button after first click (already done with isProcessing)
-├── Payment timeout → Handle Razorpay timeout event
-├── Session expired during checkout → Redirect to login
-├── Rider accepting already-accepted order → Backend validation
-├── Multiple riders accepting same order → Backend race condition handling
-├── Cancel order after restaurant accepted → Show appropriate message
-└── Price mismatch (cart price vs current menu price) → Verify prices on backend
+│
+├── createOrder:
+│   ├── Verify each item exists in Menu model and is "available"
+│   ├── Verify current prices match what frontend sent (prevent price tampering)
+│   ├── Verify restaurant exists and is active
+│   └── Prevent empty items array
+│
+├── updateOrderStatus:
+│   ├── Valid transitions only:
+│   │   placed → confirmed OR cancelled
+│   │   confirmed → preparing
+│   │   preparing → ready
+│   │   ready → on-way (only via rider accept)
+│   │   on-way → delivered (only via rider complete)
+│   └── Reject invalid transitions with clear error message
+│
+├── acceptOrder (rider):
+│   ├── Check riderID is null (prevent double-accept race condition)
+│   └── Check orderStatus is "ready"
+│
+└── cancelOrder:
+    ├── Only if status is "placed" (not yet accepted by restaurant)
+    └── If online payment was "paid" → set paymentStatus to "refunded"
 ```
 
 **Checklist**:
-- [ ] Add price verification in `createOrder` controller (fetch current prices from Menu model)
-- [ ] Add availability check in `createOrder` controller
-- [ ] Handle rider race condition (check if riderID already assigned before accepting)
-- [ ] Add proper error messages for all edge cases
-- [ ] Test all edge cases manually
+- [ ] Add item availability check in `createOrder`
+- [ ] Add price verification in `createOrder`
+- [ ] Add status transition validation in `updateOrderStatus`
+- [ ] Add race condition check in rider `acceptOrder`
+- [ ] Add refund status handling in `cancelOrder`
+- [ ] Test all edge cases
+
+#### Hour 2: Order Status Polling (Frontend)
+
+**Topics**: `setInterval`, useEffect cleanup, comparing state
+
+**File to Update**: `client/src/components/userDashboard/UserOrders.jsx`
+
+```
+Add to UserOrders:
+├── Poll /order/my-orders every 30 seconds
+├── On each poll, compare old orders vs new orders
+├── If any order's status changed → toast("Order #xxxx status: preparing")
+├── Cleanup interval on unmount: return () => clearInterval(intervalId)
+└── Add manual [Refresh] button
+```
+
+**Also add polling to**: `client/src/components/restaurantDashboard/RestaurantOrders.jsx`
+- Poll every 20 seconds for new incoming orders
+- Toast when a new order arrives
+
+**Checklist**:
+- [ ] Add 30-sec polling in `UserOrders.jsx`
+- [ ] Add status-change toast notification
+- [ ] Add cleanup in useEffect return
+- [ ] Add manual refresh button
+- [ ] Add 20-sec polling in `RestaurantOrders.jsx`
+- [ ] Test: Change order status from one browser → see update in another
+
+#### Hour 3: Frontend Error Handling + UX Fixes
+
+**Quick fixes across the app**:
+
+```
+Fixes to address:
+├── CheckoutPage: Disable "Place Order" button while processing (already has isProcessing ✅)
+├── CheckoutPage: Verify cart isn't empty before API call
+├── RestaurantDisplayMenu: Check item availability before "Add to Cart"
+├── Cart: If cart restaurant doesn't exist anymore → show warning
+├── All API calls: Ensure catch blocks show user-friendly toast messages
+├── Login redirect: If user tries to access dashboard without login → redirect to /login (already done ✅)
+└── Remove console.log in RestaurantDisplayMenu line: {console.log("cartFlag", ...)}
+```
+
+**Checklist**:
+- [ ] Remove stray `console.log` in production code (RestaurantDisplayMenu.jsx)
+- [ ] Add availability check before add-to-cart
+- [ ] Verify all error toasts show meaningful messages
+- [ ] Quick test of all error scenarios
 
 ---
 
-### DAY 10 (Feb 28) — Final Testing + Admin Dashboard (Basic) + Deployment Prep
+### DAY 13 — Mar 3 (Tue) — Admin Dashboard (Basic)
 
-#### Class 20: Admin Dashboard (Basic)
+**Session Goal**: Build a basic but functional admin dashboard.
 
-**Topics to Learn/Revise**:
-- Platform-wide data aggregation
-- Admin role checking
+#### Hour 1: Admin Backend (Optional — can compute on frontend)
 
-**What to Build (Minimum Viable)**:
+**Option A (Simpler — Do This First)**: Frontend fetches from existing endpoints
+- Since admin is a special role, create minimal endpoints
 
-**File**: `client/src/pages/dashboards/AdminDashboard.jsx`
+**File to Create**: `server/src/controllers/adminController.js`
+
+| Function | Purpose |
+|----------|---------|
+| `getPlatformStats` | Count users by role, count orders by status, sum revenue |
+| `getAllOrders` | Return all orders with populate (paginated) |
+| `getAllUsers` | Return all users (select "-password") |
+
+**File to Create**: `server/src/routers/adminRouter.js`
 
 ```
-AdminDashboard (Basic):
-├── Auth check (role === "admin")
-├── Platform Stats:
-│   ├── Total Users (all roles count)
-│   ├── Total Restaurants
-│   ├── Total Orders
-│   ├── Total Revenue (sum of all delivered orders)
-│   └── Total Riders
-├── Recent Orders Table (latest 10 orders across platform)
-└── User List (basic table)
+GET    /admin/stats       → Protect, AdminProtect → getPlatformStats
+GET    /admin/all-orders  → Protect, AdminProtect → getAllOrders
+GET    /admin/all-users   → Protect, AdminProtect → getAllUsers
 ```
 
-**Backend needed** (Optional — if time permits):
-- `GET /admin/stats` → returns platform-wide counts
-- `GET /admin/all-orders` → returns all orders with pagination
-- `GET /admin/all-users` → returns all users
+**File to Update**: `server/index.js` — register admin router
 
 **Checklist**:
-- [ ] Create basic admin controller + router (if time permits)
-- [ ] Build `AdminDashboard.jsx` with stats
+- [ ] Create admin controller with 3 functions
+- [ ] Create admin router
+- [ ] Register in index.js
+- [ ] Test with Postman (login as admin)
+
+#### Hour 2–3: Admin Dashboard Frontend
+
+**File to Update**: `client/src/pages/dashboards/AdminDashboard.jsx`
+
+```
+AdminDashboard:
+├── Auth check (role === "admin")
+├── Stats Cards Row:
+│   ├── Total Customers
+│   ├── Total Restaurants
+│   ├── Total Riders
+│   ├── Total Orders
+│   └── Total Revenue
+├── Recent Orders Table (last 10):
+│   ├── Order ID, Customer, Restaurant, Amount, Status, Date
+│   └── Scrollable table
+├── Users Table (basic):
+│   ├── Name, Email, Role, Status, Joined Date
+│   └── Simple list
+└── (No sidebar needed — keep it simple with sections)
+```
+
+**Checklist**:
+- [ ] Rewrite `AdminDashboard.jsx`
+- [ ] Fetch stats from `/admin/stats`
+- [ ] Display stat cards
+- [ ] Fetch and display recent orders
+- [ ] Fetch and display users list
 - [ ] Test with admin account
 
 ---
 
-#### Class 21: Final Testing & Bug Fixes
+### DAY 14 — Mar 4 (Wed) — Final Testing + Cleanup
 
-**Complete Test Matrix**:
+**Session Goal**: Complete test matrix, fix remaining bugs, clean up code.
 
-| Test Case | Expected Result | Status |
-|-----------|-----------------|--------|
-| Customer registers | Account created, redirect to login | ☐ |
-| Customer logs in | JWT cookie set, redirect to dashboard | ☐ |
-| Customer browses restaurants | All restaurants displayed | ☐ |
-| Customer searches restaurant | Filtered results shown | ☐ |
-| Customer views menu | Menu items with add to cart | ☐ |
-| Customer adds to cart | Item added, count updates | ☐ |
-| Customer checks out (COD) | Order created, status "placed" | ☐ |
-| Customer checks out (Razorpay) | Payment popup, order created after payment | ☐ |
-| Customer views orders | All orders with correct status | ☐ |
-| Customer cancels order | Status changes to "cancelled" | ☐ |
-| Restaurant sees new order | Order appears in orders tab | ☐ |
-| Restaurant accepts order | Status → "confirmed" | ☐ |
-| Restaurant prepares order | Status → "preparing" | ☐ |
-| Rider sees available order | Order appears in available list | ☐ |
-| Rider accepts delivery | Status → "on-way", rider assigned | ☐ |
-| Rider completes delivery | Status → "delivered" | ☐ |
-| Customer sees delivered order | Status updated on customer side | ☐ |
-| Restaurant earnings update | Delivered order counted in earnings | ☐ |
-| Search works | Correct restaurants/items returned | ☐ |
-| Password reset works | Password changed successfully | ☐ |
-| Profile update works | All fields saved correctly | ☐ |
+#### Hour 1–2: Full Test Matrix
+
+| # | Test Case | Expected Result | Pass? |
+|---|-----------|-----------------|-------|
+| 1 | Customer registers | Account created | ☐ |
+| 2 | Customer logs in | JWT cookie set, navigates to dashboard | ☐ |
+| 3 | Customer browses restaurants | All restaurants shown | ☐ |
+| 4 | Customer searches restaurants | Filtered results | ☐ |
+| 5 | Customer views restaurant menu | Menu items shown with Add to Cart | ☐ |
+| 6 | Customer adds items to cart | Cart bar appears at bottom | ☐ |
+| 7 | Customer proceeds to checkout | Checkout page with items, address, payment | ☐ |
+| 8 | Customer places order (COD) | Order created, cart cleared, redirected | ☐ |
+| 9 | Customer places order (Razorpay) | Payment popup, order paid | ☐ |
+| 10 | Customer views order history | Orders listed with status badges | ☐ |
+| 11 | Customer cancels a "placed" order | Status → cancelled | ☐ |
+| 12 | Customer views overview | Correct stats shown | ☐ |
+| 13 | Customer views transactions | Payment list shown | ☐ |
+| 14 | Customer submits help ticket | Contact form submitted | ☐ |
+| 15 | Restaurant sees new order | Order appears with "Accept" button | ☐ |
+| 16 | Restaurant accepts order | Status → confirmed | ☐ |
+| 17 | Restaurant starts preparing | Status → preparing | ☐ |
+| 18 | Restaurant marks ready | Status → ready | ☐ |
+| 19 | Restaurant overview shows stats | Real numbers from orders | ☐ |
+| 20 | Restaurant earnings shows data | Delivered orders with amounts | ☐ |
+| 21 | Rider sees available orders | Orders with status "ready" | ☐ |
+| 22 | Rider accepts delivery | Status → on-way, rider assigned | ☐ |
+| 23 | Rider marks delivered | Status → delivered | ☐ |
+| 24 | Rider overview shows stats | Delivery counts | ☐ |
+| 25 | Admin sees platform stats | All counts correct | ☐ |
+| 26 | Search works | Correct restaurants returned | ☐ |
+| 27 | Password reset works | OTP sent, password changed | ☐ |
+| 28 | Profile update works | Fields saved | ☐ |
+| 29 | Forgot password works | OTP → verify → new password | ☐ |
+| 30 | Logout works | Cookie cleared, redirected | ☐ |
+
+#### Hour 3: Code Cleanup
 
 **Checklist**:
-- [ ] Run through entire test matrix
-- [ ] Fix all found bugs
-- [ ] Clean up console.log statements
-- [ ] Verify all error messages are user-friendly
-- [ ] Check mobile responsiveness (basic)
+- [ ] Remove all stray `console.log` statements from frontend
+- [ ] Ensure all API error responses are caught and shown to user
+- [ ] Verify no hardcoded URLs (use `api` instance everywhere)
+- [ ] Check all pages are accessible via routes in `App.jsx`
+- [ ] Ensure mobile-responsive (basic — Tailwind responsive classes)
+- [ ] Final commit with clean code
 
 ---
 
-### BUFFER DAY — March 1 (Deadline Day)
+### BUFFER — Mar 5 (Thu) — Deadline Safety Net
 
-Use this day for:
-- Any remaining bug fixes
-- Code cleanup
-- Final testing
-- Deployment preparation
+Use this day ONLY if needed for:
+- Remaining bug fixes from Day 14 test matrix
+- Any deployment preparation
+- Final polish
 
 ---
 
-## File Creation Summary
+## Files to Create (Complete List)
 
-### New Backend Files to Create
+### Backend (New Files)
 
-```
-server/src/
-├── models/
-│   └── orderModel.js              ← DAY 1
-├── controllers/
-│   ├── orderController.js         ← DAY 1
-│   ├── riderController.js         ← DAY 4
-│   └── paymentController.js       ← DAY 7
-├── routers/
-│   ├── orderRouter.js             ← DAY 1
-│   ├── riderRouter.js             ← DAY 4
-│   └── paymentRouter.js           ← DAY 7
-└── config/
-    └── razorpay.js                ← DAY 7
-```
+| File | Day | Purpose |
+|------|-----|---------|
+| `server/src/models/orderModel.js` | Day 1 | Order schema |
+| `server/src/controllers/orderController.js` | Day 1 | Order CRUD functions |
+| `server/src/routers/orderRouter.js` | Day 2 | Order API routes |
+| `server/src/controllers/riderController.js` | Day 5 | Rider order functions |
+| `server/src/routers/riderRouter.js` | Day 5 | Rider API routes |
+| `server/src/config/razorpay.js` | Day 9 | Razorpay instance config |
+| `server/src/controllers/paymentController.js` | Day 9 | Payment functions |
+| `server/src/routers/paymentRouter.js` | Day 9 | Payment API routes |
+| `server/src/controllers/adminController.js` | Day 13 | Admin stats functions |
+| `server/src/routers/adminRouter.js` | Day 13 | Admin API routes |
 
-### New Frontend Files to Create
+### Frontend (New Files)
 
-```
-client/src/components/
-├── riderDashboard/                ← DAY 4
-│   ├── RiderSideBar.jsx
-│   ├── RiderOverview.jsx
-│   ├── RiderAvailableOrders.jsx
-│   ├── RiderMyDeliveries.jsx
-│   └── RiderProfile.jsx
-```
+| File | Day | Purpose |
+|------|-----|---------|
+| `client/src/components/riderDashboard/RiderSideBar.jsx` | Day 6 | Rider sidebar navigation |
+| `client/src/components/riderDashboard/RiderOverview.jsx` | Day 6 | Rider stats dashboard |
+| `client/src/components/riderDashboard/RiderAvailableOrders.jsx` | Day 6 | Available orders list |
+| `client/src/components/riderDashboard/RiderMyDeliveries.jsx` | Day 6 | Rider's delivery history |
+| `client/src/components/riderDashboard/RiderProfile.jsx` | Day 6 | Rider profile management |
 
 ### Existing Files to Modify
 
-```
-server/
-├── index.js                       ← Register new routers (DAY 1, 4, 7)
-
-client/src/
-├── pages/
-│   ├── CheckoutPage.jsx           ← Connect to order API + Razorpay (DAY 2, 7)
-│   ├── OrderNow.jsx               ← Add search & filter (DAY 6)
-│   └── dashboards/
-│       ├── RiderDashboard.jsx     ← Full rebuild (DAY 4)
-│       └── AdminDashboard.jsx     ← Basic build (DAY 10)
-├── components/
-│   ├── userDashboard/
-│   │   ├── UserOverview.jsx       ← Add real data (DAY 8)
-│   │   ├── UserOrders.jsx         ← Full rebuild (DAY 2)
-│   │   ├── UserTransactions.jsx   ← Full rebuild (DAY 8)
-│   │   └── UserHelpDesk.jsx       ← Add form UI (DAY 8)
-│   └── restaurantDashboard/
-│       ├── RestaurantOverview.jsx  ← Connect real data (DAY 3)
-│       ├── RestaurantOrders.jsx    ← Full rebuild (DAY 3)
-│       ├── RestaurantEarnings.jsx  ← Add real data (DAY 3)
-│       └── RestaurantHelpDesk.jsx  ← Add form UI (DAY 8)
-```
+| File | Day | What Changes |
+|------|-----|-------------|
+| `server/index.js` | Day 2, 5, 9, 13 | Register new routers |
+| `client/src/pages/CheckoutPage.jsx` | Day 3, 10 | API call + Razorpay |
+| `client/src/components/userDashboard/UserOrders.jsx` | Day 3 | Full rewrite with data |
+| `client/src/components/restaurantDashboard/RestaurantOrders.jsx` | Day 4 | Full rewrite with data |
+| `client/src/components/restaurantDashboard/RestaurantOverview.jsx` | Day 4 | Real data from orders |
+| `client/src/components/restaurantDashboard/RestaurantEarnings.jsx` | Day 4 | Real earnings data |
+| `client/src/pages/dashboards/RiderDashboard.jsx` | Day 6 | Full rewrite with sidebar |
+| `client/src/pages/OrderNow.jsx` | Day 8 | Add search & filter UI |
+| `client/src/components/userDashboard/UserOverview.jsx` | Day 11 | Stats from orders |
+| `client/src/components/userDashboard/UserTransactions.jsx` | Day 11 | Transaction list |
+| `client/src/components/userDashboard/UserHelpDesk.jsx` | Day 11 | Help form |
+| `client/src/components/restaurantDashboard/RestaurantHelpDesk.jsx` | Day 11 | Help form |
+| `client/src/pages/dashboards/AdminDashboard.jsx` | Day 13 | Full rewrite |
+| `client/index.html` | Day 10 | Razorpay script tag |
+| `server/src/controllers/publicControlller.js` | Day 8 | Add search function |
+| `server/src/routers/publicRouter.js` | Day 8 | Add search route |
 
 ### NPM Packages to Install
 
-```
-Server:
-└── razorpay                       ← DAY 7
-
-Client:
-└── (no new packages needed — axios, react-icons already installed)
-```
+| Package | Location | Day | Command |
+|---------|----------|-----|---------|
+| `razorpay` | server | Day 9 | `cd server && npm install razorpay` |
 
 ---
 
-## Visual Flow Diagram
+## Visual Order Status Flow
 
 ```
-                    ┌─────────────────────────────────────────┐
-                    │           CUSTOMER FLOW                  │
-                    ├─────────────────────────────────────────┤
-                    │  Browse Restaurants → View Menu          │
-                    │       ↓                                  │
-                    │  Add to Cart (localStorage)              │
-                    │       ↓                                  │
-                    │  Checkout Page                           │
-                    │       ↓                                  │
-                    │  Choose Payment (Razorpay / COD)         │
-                    │       ↓                                  │
-                    │  Place Order → POST /order/create        │
-                    │       ↓                                  │
-                    │  Order Status: "placed"                  │
-                    │       ↓                                  │
-                    │  Track in UserOrders                     │
-                    └──────────────┬──────────────────────────┘
-                                   │
-                    ┌──────────────▼──────────────────────────┐
-                    │        RESTAURANT FLOW                   │
-                    ├─────────────────────────────────────────┤
-                    │  See new order in RestaurantOrders       │
-                    │       ↓                                  │
-                    │  Accept → status: "confirmed"            │
-                    │       ↓                                  │
-                    │  Start Preparing → status: "preparing"   │
-                    │       ↓                                  │
-                    │  Ready for Pickup                        │
-                    └──────────────┬──────────────────────────┘
-                                   │
-                    ┌──────────────▼──────────────────────────┐
-                    │          RIDER FLOW                      │
-                    ├─────────────────────────────────────────┤
-                    │  See available orders (status=preparing) │
-                    │       ↓                                  │
-                    │  Accept Delivery → status: "on-way"      │
-                    │       ↓                                  │
-                    │  Deliver to Customer                     │
-                    │       ↓                                  │
-                    │  Mark Delivered → status: "delivered"     │
-                    └─────────────────────────────────────────┘
+CUSTOMER                 RESTAURANT               RIDER
+────────                 ──────────               ─────
+Place Order
+    │
+    ▼
+ [placed] ──────────────► See New Order
+                              │
+                         Accept Order
+                              │
+                              ▼
+ [confirmed] ◄──────── [confirmed]
+                              │
+                         Start Preparing
+                              │
+                              ▼
+ [preparing] ◄──────── [preparing]
+                              │
+                         Mark Ready
+                              │
+                              ▼
+ [ready] ◄────────────  [ready] ─────────────► See Available
+                                                    │
+                                               Accept Delivery
+                                                    │
+                                                    ▼
+ [on-way] ◄──────────────────────────────── [on-way]
+                                                    │
+                                              Deliver & Mark
+                                                    │
+                                                    ▼
+ [delivered] ◄─────────────────────────────  [delivered]
 ```
 
 ---
 
-## Daily Summary Quick Reference
+## Daily Quick Reference
 
-| Day | Date | Focus | Key Deliverable |
-|-----|------|-------|-----------------|
-| **1** | Feb 19 | Order Backend | Order Model + Controller + Router working |
-| **2** | Feb 20 | Customer Order Flow | Checkout creates real order + Order history page |
-| **3** | Feb 21 | Restaurant Orders | Restaurant sees & manages orders + earnings |
-| **4** | Feb 22 | Rider System | Full rider dashboard + delivery flow |
-| **5** | Feb 23 | E2E Testing | Complete flow tested, bugs fixed |
-| **6** | Feb 24 | Search & Filter | Restaurant search + menu filters working |
-| **7** | Feb 25 | Payment Gateway | Razorpay integrated for online payments |
-| **8** | Feb 26 | Dashboard Polish | User overview, transactions, help desk done |
-| **9** | Feb 27 | Edge Cases | Validation, polling, error handling |
-| **10** | Feb 28 | Final Testing | Admin dashboard (basic), full test, cleanup |
-| Buffer | Mar 1 | DEADLINE | Bug fixes, final submission |
+| Day | Date | Focus | Hours | Key Deliverable |
+|-----|------|-------|-------|-----------------|
+| 1 | Feb 19 (Wed) | Order Model + Controller | 3h | Order backend logic complete |
+| 2 | Feb 20 (Thu) | Order Router + API Testing | 3h | All order APIs tested & working |
+| 3 | Feb 21 (Fri) | Checkout API + Customer Orders UI | 3h | Customer can place & view orders |
+| 4 | Feb 22 (Sat) | Restaurant Orders + Overview | 3h | Restaurant can manage orders |
+| 5 | Feb 23 (Sun) | Rider Backend | 3h | Rider APIs tested & working |
+| 6 | Feb 24 (Mon) | Rider Dashboard Frontend | 3h | Rider can accept & deliver |
+| 7 | Feb 25 (Tue) | E2E Full Flow Testing | 3h | Complete flow verified, bugs fixed |
+| 8 | Feb 26 (Wed) | Search & Filter | 3h | Restaurant search working |
+| 9 | Feb 27 (Thu) | Razorpay Backend | 3h | Payment APIs ready |
+| 10 | Feb 28 (Fri) | Razorpay Frontend | 3h | Online payments working |
+| 11 | Mar 1 (Sun) | User Dashboard Completion | 3h | Overview, Transactions, HelpDesk done |
+| 12 | Mar 2 (Mon) | Edge Cases + Polling | 3h | Validations, auto-refresh, cleanup |
+| 13 | Mar 3 (Tue) | Admin Dashboard | 3h | Basic admin panel working |
+| 14 | Mar 4 (Wed) | Final Testing + Cleanup | 3h | All 30 test cases pass, code clean |
+| Buffer | Mar 5 (Thu) | Safety net | 3h | Only if needed |
 
----
-
-## Key Technical Concepts Per Day
-
-| Day | Concepts You'll Practice |
-|-----|-------------------------|
-| 1 | Mongoose Schema Design, Express Controllers, REST API Design, Middleware Chaining |
-| 2 | Axios POST Requests, React State Management, useEffect Data Fetching, Conditional Rendering |
-| 3 | Tab-based UI Filtering, Status Badge Components, PATCH API for Updates |
-| 4 | New Feature Module Creation, Reusing Component Patterns, Role-based UI |
-| 5 | Integration Testing, Debugging API Flows, Cross-role Data Flow |
-| 6 | MongoDB Text Search / Regex, Query Parameters, Dynamic Filtering, Debounced Search |
-| 7 | Third-party Payment SDK, HMAC Signature Verification, Dynamic Script Loading |
-| 8 | Dashboard Stats Calculation, Data Aggregation, Form Components |
-| 9 | Polling with setInterval, Race Condition Handling, Input Validation |
-| 10 | Platform-wide Aggregation, Final QA, Code Cleanup |
+**Total Estimated Hours**: 42 hours (14 days × 3 hours)
 
 ---
 
-> **TIP**: Start each day by reading the specific class section, understand what needs to be built, then code. Commit your code at the end of each day. Don't skip testing — a working flow is worth more than a half-built feature.
+## Key Concepts You'll Practice Each Day
+
+| Day | Technical Concepts |
+|-----|-------------------|
+| 1 | Mongoose Schema Design, ObjectId refs, enums, nested objects |
+| 2 | Express Router, Middleware chaining, Postman API testing |
+| 3 | Axios POST, React state → API payload, useEffect fetching, conditional rendering |
+| 4 | Tab-based filtering, action buttons with API calls, frontend data aggregation |
+| 5 | Backend controller patterns, query filters, race condition prevention |
+| 6 | Component reuse, sidebar pattern, multiple new components in one module |
+| 7 | Integration testing, cross-role testing, systematic debugging |
+| 8 | MongoDB `$regex`, query parameters, search UI, controlled inputs |
+| 9 | Third-party SDK (Razorpay), HMAC signature verification, crypto module |
+| 10 | Dynamic script loading, popup-based payment UX, callback handling |
+| 11 | Dashboard stat calculation, data aggregation, form components |
+| 12 | setInterval polling, useEffect cleanup, input validation, error handling |
+| 13 | Platform-wide aggregation, admin role patterns |
+| 14 | QA testing, code cleanup, final validation |
+
+---
+
+> **Rule**: Finish each day's checklist before moving to the next day. If a day's work takes 4 hours instead of 3, that's okay — but don't skip to the next day with unfinished items. The order matters because each day builds on the previous one.
 
 ---
 
 **Document Created**: February 19, 2026
-**Author**: Development Roadmap for Cravings Platform
