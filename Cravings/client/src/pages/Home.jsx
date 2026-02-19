@@ -95,13 +95,13 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-orange-500 to-orange-600 text-white py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="">
             {/* Left Content */}
             <div className="space-y-6">
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                Order Your Favorite Food
+              <h1 className="text-base sm:text-xl md:text-3xl lg:text-5xl xl:text-7xl font-bold leading-tight">
+                Feed Your Craving, Anytime
               </h1>
-              <p className="text-lg md:text-xl text-orange-50">
+              <p className="text-xs sm:text-md md:text-lg  lg:text-2xl xl:text-4xl text-orange-50">
                 Discover delicious meals from the best restaurants in your area.
                 Fast delivery, great quality, amazing taste!
               </p>
@@ -135,11 +135,6 @@ const Home = () => {
                   <p className="text-orange-50">Support</p>
                 </div>
               </div>
-            </div>
-
-            {/* Right Visual */}
-            <div className="flex justify-center items-center">
-              <div className="text-8xl animate-bounce">🍽️</div>
             </div>
           </div>
         </div>
