@@ -14,7 +14,7 @@
 | Module | Status | Details |
 |--------|--------|---------|
 | **Authentication System** | ✅ Complete | Register, Login, Logout, OTP, Forget Password all working |
-| **JWT + Cookie Auth** | ✅ Complete | `parleG` cookie, `Protect`, `ManagerProtect`, `CustomerProtect`, `AdminProtect`, `PartnerProtect`, `OtpProtect` middleware — all in place |
+| **JWT + Cookie Auth** | ✅ Complete | cookie, `Protect`, `ManagerProtect`, `CustomerProtect`, `AdminProtect`, `PartnerProtect`, `OtpProtect` middleware — all in place |
 | **User Profile CRUD** | ✅ Complete | Update profile, change photo (Cloudinary), reset password |
 | **Restaurant Profile CRUD** | ✅ Complete | Update profile, change photo, reset password |
 | **Restaurant Menu CRUD** | ✅ Complete | Add, edit, get menu items with multi-image upload |
