@@ -39,7 +39,7 @@ const orderSchema = new mongoose.Schema(
         type: Number,
         required: true,
       },
-      discountType: {
+      promoCode: {
         type: String,
       },
       discountPercentage: {
@@ -53,6 +53,11 @@ const orderSchema = new mongoose.Schema(
       paymentMethod: {
         type: String,
         required: true,
+      },
+      paymentStatus: {
+        type: String,
+        enum: ["pending", "paid", "failed"],
+        default: "pending",
       },
     },
     status: {
@@ -68,6 +73,7 @@ const orderSchema = new mongoose.Schema(
         "refused",
         "damaged",
         "cancelled",
+        "rejected",
       ],
       default: "pending",
     },

@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
-import api from '../config/Api'
+import api from "../config/Api";
 
 const PromoCode = {
   NEW50: 50,
@@ -19,6 +19,7 @@ const CheckoutPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState("pending");
 
   // Tax and charges calculation
   const TAX_RATE = 0.05; // 5% tax
@@ -111,15 +112,27 @@ const CheckoutPage = () => {
         subtotal,
         tax,
         total,
-        discountType: promoCode,
+        promoCode,
         deliveryFee: 50,
         discountPercentage: PromoCode[promoCode.toUpperCase()],
         paymentMethod,
+        paymentStatus,
       },
       status: "pending",
       review: {},
     };
   };
+  
+  const handlePayment = async () => {
+    try {
+
+      //call Payment gateway API
+      setPaymentStatus("paid");
+    } catch (error) {
+      setPaymentStatus("failed");
+    }
+  };
+
   const handlePlaceOrder = async () => {
     if (!user || !cart) {
       toast.error("Session expired. Please login again.");
@@ -129,14 +142,13 @@ const CheckoutPage = () => {
 
     setIsProcessing(true);
 
-    //Payment gateway call
+    handlePayment();
 
     const payload = GeneratePayload();
     console.log(payload);
 
     try {
-      
-      const res = await api.post("/user/placeorder",payload)
+      const res = await api.post("/user/placeorder", payload);
       toast.success(res.data.message);
       localStorage.removeItem("cart");
       navigate("/user-dashboard", { state: { tab: "orders" } });
