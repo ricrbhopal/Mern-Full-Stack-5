@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../config/Api";
+// import axios from "axios";
 import Loading from "../Loading";
 import ViewDetailsModal from "./modals/ViewDetailsModal";
 import { useAuth } from "../../context/AuthContext";
@@ -33,10 +34,9 @@ const RiderCurrentOrder = () => {
         setAvailableOrder([]);
       } else {
         setCurrentOrder([]);
-        response = await api.get("/rider/availableOrder");
+        console.log("riderLocation", riderLocation);
+        response = await api.post("/rider/availableOrder", riderLocation);
         setAvailableOrder(response.data.data || []);
-
-        response.data.data.length > 0 && calculateDistance(response.data.data);
       }
     } catch (error) {
       console.error("Error fetching current order:", error);
@@ -45,6 +45,9 @@ const RiderCurrentOrder = () => {
     }
   };
 
+  useEffect(() => {
+    refershLocation();
+  }, []);
   useEffect(() => {
     fetchOngoingOrder();
     const interval = setInterval(() => {
@@ -73,18 +76,6 @@ const RiderCurrentOrder = () => {
     );
   };
 
-  const getDistance = (riderLocation, resturantLocation) => {
-    //call google Location Api
-    //return Distance and Time
-  };
-
-
-  const calculateDistance=(orderData)=>{
-
-    
-
-  }
-
   if (isLoading) {
     return (
       <div className="w-full h-full">
@@ -92,6 +83,10 @@ const RiderCurrentOrder = () => {
       </div>
     );
   }
+
+
+  console.log("Available order : ",availableOrder);
+  
 
   return (
     <div className="bg-gray-50 rounded-lg p-6 h-full overflow-y-auto">
@@ -205,6 +200,9 @@ const RiderCurrentOrder = () => {
                       Status
                     </th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                      Distance (Km)
+                    </th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-700">
                       Action
                     </th>
                   </tr>
@@ -238,6 +236,9 @@ const RiderCurrentOrder = () => {
                         >
                           {order.status || "pending"}
                         </span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {order.distanceFromRider || 0}
                       </td>
                       <td className="ps-4 py-3">
                         <button

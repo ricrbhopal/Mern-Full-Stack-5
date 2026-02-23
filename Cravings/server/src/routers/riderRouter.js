@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get("/availableOrder", Protect, PartnerProtect, RiderGetAvailableOrder);
+router.post("/availableOrder", Protect, PartnerProtect, RiderGetAvailableOrder);
 router.get("/ongoingOrder", Protect, PartnerProtect, RiderGetOngoingOrder);
 router.get("/completedOrder", Protect, PartnerProtect, RiderGetCompletedOrder);
 
