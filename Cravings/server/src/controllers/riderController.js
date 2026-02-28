@@ -79,3 +79,26 @@ export const RiderGetCompletedOrder = async (req, res, next) => {
     next(error);
   }
 };
+
+export const RiderAcceptOrder = async (req, res, next) => {
+  try {
+    const riderId = req.user._id;
+
+    const orderID = req.params.id;
+
+    const currentOrder = await Order.findById(orderID);
+
+    if (!currentOrder) {
+      const error = new Error("Order Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    currentOrder.riderId = riderId;
+    await currentOrder.save();
+
+    res.status(200).json({ message: "Order Assingned to you" });
+  } catch (error) {
+    next(error);
+  }
+};

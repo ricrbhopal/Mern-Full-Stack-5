@@ -48,13 +48,28 @@ const RiderCurrentOrder = () => {
   useEffect(() => {
     refershLocation();
   }, []);
+
   useEffect(() => {
-    fetchOngoingOrder();
-    const interval = setInterval(() => {
+    if (!viewdetailsModalOpen) {
       fetchOngoingOrder();
-    }, 1000 * 30); // Refresh every 30 sec
-    return () => clearInterval(interval);
-  }, []);
+      const interval = setInterval(() => {
+        fetchOngoingOrder();
+      }, 1000 * 30); // Refresh every 30 sec
+      return () => clearInterval(interval);
+    }
+  }, [ViewDetailsModal]);
+
+  const handleDirection = (toLocation) => {
+    let to;
+
+    toLocation === "restaurant"
+      ? (to = currentOrder[0].restaurantId?.geoLocation)
+      : (to = currentOrder[0].userId?.geoLocation);
+
+    const URL = ` https://www.google.com/maps/dir/?api=1&origin=${riderLocation.lat},${riderLocation.lon}&destination=${to.lat},${to.lon}&travelmode=two-wheeler`;
+
+    window.open(URL, "_blank");
+  };
 
   const refershLocation = () => {
     navigator.geolocation.getCurrentPosition(
@@ -84,9 +99,7 @@ const RiderCurrentOrder = () => {
     );
   }
 
-
-  console.log("Available order : ",availableOrder);
-  
+  console.log("Available order : ", availableOrder);
 
   return (
     <div className="bg-gray-50 rounded-lg p-6 h-full overflow-y-auto">
@@ -103,7 +116,7 @@ const RiderCurrentOrder = () => {
         <div className="border mt-3" />
 
         {currentOrder.length > 0 && (
-          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="mt-6">
             {currentOrder.map((order, idx) => (
               <div
                 key={order._id || idx}
@@ -165,6 +178,24 @@ const RiderCurrentOrder = () => {
                         : "N/A"}
                     </p>
                   </div>
+                </div>
+                <div className="flex justify-between p-5 border-t-2 mt-2">
+                  <button
+                    className="bg-green-100 hover:bg-green-300 text-green-700 px-4 py-2 rounded-md transition ml-2"
+                    onClick={() => {
+                      handleDirection("restaurant");
+                    }}
+                  >
+                    Direction to Restaurant
+                  </button>
+                  <button
+                    className="bg-green-100 hover:bg-green-300 text-green-700 px-4 py-2 rounded-md transition ml-2"
+                    onClick={() => {
+                      handleDirection("customer");
+                    }}
+                  >
+                    Direction to Customer
+                  </button>
                 </div>
               </div>
             ))}
@@ -273,6 +304,16 @@ const RiderCurrentOrder = () => {
           onClose={() => setViewDetailsModalOpen(false)}
         />
       )}
+      <div>
+        <iframe
+          width="500"
+          height="500"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=23.2599,77.4126&z=15&output=embed"
+        ></iframe>
+      </div>
     </div>
   );
 };
