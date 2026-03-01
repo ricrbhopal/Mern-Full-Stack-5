@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 import api from "../config/Api";
+import logo from "../assets/circleLogo.png";
 
 const PromoCode = {
   NEW50: 50,
@@ -11,11 +12,15 @@ const PromoCode = {
   CRAVE10: 10,
 };
 
+const AvailablePaymentMethod = [
+  { id: "razorPay", label: "Pay Online" },
+  { id: "cod", label: "Cash on Delivery" },
+];
 const CheckoutPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
-  const [paymentMethod, setPaymentMethod] = useState("credit-card");
+  const [paymentMethod, setPaymentMethod] = useState("razorpay");
   const [isProcessing, setIsProcessing] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(false);
@@ -122,14 +127,60 @@ const CheckoutPage = () => {
       review: {},
     };
   };
-  
+
   const handlePayment = async () => {
     try {
-
       //call Payment gateway API
       setPaymentStatus("paid");
     } catch (error) {
       setPaymentStatus("failed");
+    }
+  };
+
+  const handleRazorpayPayment = async () => {
+    const { total } = calculatePrices();
+    try {
+      const keyRes = await api.get("/payment/getRazorpayKey");
+      const key = keyRes.data.key;
+
+      const orderRes = await api.post("/payment/createOrder", {
+        amount: total,
+      });
+
+      const orderdata = orderRes.data;
+
+      const option = {
+        key,
+        amount: orderdata.amount,
+        currency: orderdata.currency,
+        name: "Cravings", //your business name
+        description: "Test Transaction",
+        image: "https://placehold.co/600x400?text=CR",
+        order_id: orderdata.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        callback_url: `${import.meta.env.VITE_FRONTEND_URL}/paymentSuccess`,
+        prefill: {
+          name: user.fullName, //your customer's name
+          email: user.email,
+          contact: user.mobileNumber, //Provide the customer's phone number for better conversion rates
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#F16D34",
+        },
+      };
+
+      const razorpay = new window.Razorpay(option);
+      razorpay.open();
+
+      razorpay.on("payment.failed", function (response) {
+        console.log("Payment Failed");
+        toast.error("Payment Failed");
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Unknown Error");
     }
   };
 
@@ -142,22 +193,30 @@ const CheckoutPage = () => {
 
     setIsProcessing(true);
 
-    handlePayment();
+    console.log("Lets Start Payment");
 
-    const payload = GeneratePayload();
-    console.log(payload);
+    if (paymentMethod === "razorPay") {
+      console.log("Calling RazorPay");
 
-    try {
-      const res = await api.post("/user/placeorder", payload);
-      toast.success(res.data.message);
-      localStorage.removeItem("cart");
-      navigate("/user-dashboard", { state: { tab: "orders" } });
-    } catch (error) {
-      console.error("Order placement error:", error);
-      toast.error(error?.response?.data?.message || "Failed to place order");
-    } finally {
-      setIsProcessing(false);
+      handleRazorpayPayment();
     }
+
+    // handlePayment();
+
+    // const payload = GeneratePayload();
+    // console.log(payload);
+
+    // try {
+    //   const res = await api.post("/user/placeorder", payload);
+    //   toast.success(res.data.message);
+    //   localStorage.removeItem("cart");
+    //   navigate("/user-dashboard", { state: { tab: "orders" } });
+    // } catch (error) {
+    //   console.error("Order placement error:", error);
+    //   toast.error(error?.response?.data?.message || "Failed to place order");
+    // } finally {
+    //   setIsProcessing(false);
+    // }
   };
 
   if (!user || !cart) {
@@ -415,27 +474,32 @@ const CheckoutPage = () => {
                 </h3>
 
                 <div className="space-y-3">
-                  {[
-                    { id: "credit-card", label: "💳 Credit/Debit Card" },
-                    { id: "upi", label: "📱 UPI" },
-                    { id: "wallet", label: "👛 Digital Wallet" },
-                    { id: "cod", label: "🏠 Cash on Delivery" },
-                  ].map((method) => (
-                    <label
-                      key={method.id}
-                      className="flex items-center cursor-pointer"
-                    >
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="razorPay"
+                      checked={paymentMethod === "razorPay"}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="w-4 h-4"
+                    />
+                    <span className="ml-3 text-gray-700">{"Pay Online"}</span>
+                  </label>
+                  {total < 1000 && (
+                    <label className="flex items-center cursor-pointer">
                       <input
                         type="radio"
                         name="payment"
-                        value={method.id}
-                        checked={paymentMethod === method.id}
+                        value="cod"
+                        checked={paymentMethod === "cod"}
                         onChange={(e) => setPaymentMethod(e.target.value)}
                         className="w-4 h-4"
                       />
-                      <span className="ml-3 text-gray-700">{method.label}</span>
+                      <span className="ml-3 text-gray-700">
+                        {"Cash on Delivery"}
+                      </span>
                     </label>
-                  ))}
+                  )}
                 </div>
               </div>
 
